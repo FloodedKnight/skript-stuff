@@ -1,0 +1,74 @@
+on right click with player head:
+	if player is not sneaking:
+		if name of event-item is "&4&l&kM&c&lI&6&lN&e&lF&a&lI&b&lN&9&lI&5&lT&c&lY &6&lGAUNTLET&4&l&kM":
+			"%region at player%" does not contain "jail"
+			if "%region at player%" contains "_reality":
+				cancel event
+				send "&8[&c✖&8] &7You cannot use that here!" to player
+			else:
+				if difference between now and {spacestone.%player's uuid%.spacestone.lastUsed} is less than 60 seconds:
+					cancel event
+					message "&8[&c✖&8] §x§0§0§c§f§f§bSpace Stone &cis on cooldown! &8(%difference between {spacestone.%player's uuid%.spacestone.lastUsed} and (60 seconds before now)%)" to player
+				else:
+					open chest inventory with 6 rows named "&6Teleport to a player" to player
+					set {_amount} to size of online players
+					set {_slot} to 9
+					set slot (integers between 0 and 8) and (integers between 45 and 53) of player's current inventory to black stained glass pane named "&a"
+					loop all players:
+						if {vanish.%loop-player's uuid%} is not true:
+							set slot {_slot} of player's current inventory to skull of loop-player named the display name of the loop-player with lore "§x§0§8§F§B§F§B%loop-player's group%"
+							add 1 to {_slot}
+
+on inventory click:
+    if name of player's current inventory contains "Teleport to a player":
+        cancel event
+        if clicked slot is a player head:
+            "%region at player%" does not contain "gojo"
+            set {_player} to unformatted name of clicked slot
+            set {_playtpcanc} to "%{_player}%" parsed as player
+            close player's inventory
+            if {_playtpcanc} has permission "gamemode.gmsp":
+                cancel event
+                send "&8[&c✖&8] &7You cannot teleport to that staff member!"
+                play sound "block.note_block.pling" at pitch 0 to player
+                close player's inventory
+                stop
+            if "%region at {_playtpcanc}%" does not contain "main":
+                cancel event
+                send "&8[&c✖&8] &7You can only teleport to people in the box!"
+                stop
+            else:
+                draw 200 of dust using dustOption(rgb(52, 189, 235), 1) at player ~ vector(0, 0, 0) with offset vector(0.5, 1, 0.5)
+                wait 1 tick
+                make 500 of smoke at player with offset vector(0.2, 1, 0.2) with extra 0.1
+                wait 1 tick
+                teleport player to location 0.5 above {_playtpcanc}
+                wait 3 ticks
+                send action bar "&8USING &8| §x§0§0§c§f§f§bSpace Stone &r&8|" to player
+                play sound "block.respawn_anchor.set_spawn" to player
+                hide player from all players
+                wait 10 ticks
+                send "&8[◆&8] &b%player% &7teleported to you using the §x§0§0§c§f§f§bSpace Stone!" to {_player} parsed as player
+                play sound "block.respawn_anchor.set_spawn" to {_player} parsed as player
+                make 500 of smoke at player with offset vector(0.2, 1, 0.2) with extra 0.1
+                wait 1 tick
+                draw 200 of dust using dustOption(rgb(52, 189, 235), 1) at player ~ vector(0, 0, 0) with offset vector(0.5, 1, 0.5)
+                wait 1 tick
+                reveal player to all players
+                set {spacestone.%player's uuid%.spacestone.lastUsed} to now
+        else:
+            send "&8[&c✖&8] &7Invalid slot, click a player."
+            close player's inventory
+            play sound "block.note_block.pling" at pitch 0 to player
+			
+on command:
+	if any:
+		command is "vanish" or "sv" or "v"
+		command contains "supervanish"
+	then:
+		if {vanish.%player's uuid%} is true:
+			delete {vanish.%player's uuid%}
+			stop
+		if {vanish.%player's uuid%} is not set:
+			set {vanish.%player's uuid%} to true
+			stop
