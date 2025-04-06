@@ -1,0 +1,80 @@
+on damage:
+	victim is an ender dragon:
+		attacker is a player:
+			unformatted name of attacker's tool is "Impostor's Sword" or "M Dragon's Blade M":
+				set {_w} to victim's health
+				set victim's health to {_w} - 300
+				wait 1 tick
+				add 300 to {DragonDamageTop::%attacker's uuid%}
+				if name of attacker's offhand item contains "End Talisman &8[&b💎💎💎":
+					set victim's health to {_w} - 300
+					add 300 to {DragonDamageTop::%attacker's uuid%}
+				stop
+
+on damage:
+	victim is an ender dragon:
+		damage cause is projectile
+		name of shooter's tool is "&5End Bow &8[&7💎💎💎💎💎&8]":
+			set {_w} to victim's health
+			set victim's health to {_w} - 90
+			wait 1 tick
+			add 70 to {DragonDamageTop::%shooter's uuid%}
+			play sound "entity.experience_orb.pickup" at pitch 0.8 to shooter
+			if name of shooter's offhand item contains "End Talisman &8[&b💎💎💎":
+				set victim's health to {_w} - 70
+				add 70 to {DragonDamageTop::%attacker's uuid%}
+			
+on damage:
+	victim is an ender dragon:
+		damage cause is projectile
+		name of shooter's tool is "&5End Bow &8[&b💎&7💎💎💎💎&8]":
+			set {_w} to victim's health
+			set victim's health to {_w} - 100
+			wait 1 tick
+			add 100 to {DragonDamageTop::%shooter's uuid%}
+			play sound "entity.experience_orb.pickup" at pitch 0.8 to shooter
+			if name of shooter's offhand item contains "End Talisman &8[&b💎💎💎":
+				set victim's health to {_w} - 100
+				add 100 to {DragonDamageTop::%attacker's uuid%}
+			
+on damage:
+	victim is an ender dragon:
+		damage cause is projectile
+		name of shooter's tool contains "&5End Bow &8[&b💎💎":
+			set {_w} to victim's health
+			set victim's health to {_w} - 135
+			wait 1 tick
+			add 135 to {DragonDamageTop::%shooter's uuid%}
+			play sound "entity.experience_orb.pickup" at pitch 0.8 to shooter
+			if name of shooter's offhand item contains "End Talisman &8[&b💎💎💎":
+				set victim's health to {_w} - 135
+				add 135 to {DragonDamageTop::%attacker's uuid%}
+				
+on damage:
+	victim is an ender dragon:
+		damage cause is projectile
+		name of shooter's tool is "&5flooded's bow lol":
+			set {_w} to victim's health
+			set victim's health to {_w} - 10000
+			wait 1 tick
+			add 10000 to {DragonDamageTop::%shooter's uuid%}
+			play sound "entity.experience_orb.pickup" at pitch 0.8 to shooter
+
+				
+on left click:
+	name of player's tool is "&5flooded's bow lol":
+		wait 3 tick
+		make player shoot an arrow at speed 3
+		push last shot projectile right at speed 0.8
+		make player shoot an arrow at speed 3
+		push last shot projectile left at speed 0.8
+		make player shoot an arrow at speed 3
+	
+			
+on damage:
+	victim is an ender dragon:
+		attacker is a player
+		add damage to {DragonDamageTop::%attacker's uuid%}	
+
+
+  
