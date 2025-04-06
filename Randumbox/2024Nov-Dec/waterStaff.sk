@@ -1,0 +1,217 @@
+on left click:
+	name of player's tool is "&9Water Staff &8| &bWater Shield &8[&7💎💎💎💎💎&8]":
+		set name of player's tool to "&9Water Staff &8| &bWater Hook &8[&7💎💎💎💎💎&8]"
+		stop
+	name of player's tool is "&9Water Staff &8| &bWater Hook &8[&7💎💎💎💎💎&8]":
+		set name of player's tool to "&9Water Staff &8| &bHotter Water &8[&7💎💎💎💎💎&8]"
+		stop
+	name of player's tool is "&9Water Staff &8| &bHotter Water &8[&7💎💎💎💎💎&8]":
+		set name of player's tool to "&9Water Staff &8| &bWave &8[&7💎💎💎💎💎&8]"
+		stop
+	name of player's tool is "&9Water Staff &8| &bWave &8[&7💎💎💎💎💎&8]":
+		set name of player's tool to "&9Water Staff &8| &bWater Shield &8[&7💎💎💎💎💎&8]"
+		stop
+
+on right click:
+	name of player's tool contains "&9Water Staff &8| &bHotter Water":
+		{pvptoggle.%player's uuid%.pvptoggle} is not the player
+		if difference between now and {WaterStaffHotterWatter.%player's uuid%.WaterStaffHotterWatter} is less than 90 seconds:
+			cancel event
+			message "&8[&c✖&8] &cHotter Water is on cooldown! &8(%difference between {WaterStaffHotterWatter.%player's uuid%.WaterStaffHotterWatter} and (90 seconds before now)%)" to player
+		else:
+			show 40 campfire signal smoke with speed 0.1 at player in radius of 0.5
+			play sound "block.fire.extinguish" at pitch 0 to player
+			set {WaterStaffHotterWatter.%player's uuid%.WaterStaffHotterWatter} to now
+			loop all players in radius 8 around player:
+				loop-player is not the player
+				play sound "block.fire.extinguish" at pitch 0 to loop-player
+				make player damage loop-player by 200
+				show 20 campfire signal smoke with speed 0.1 at loop-player in radius of 0.2
+				message "&b%player% used &9Hotter Watter &bon you!" to loop-player
+
+   function WaveCircle(l: location, r: number, t1: color, t2: num):
+	loop 360 times:
+		set {_v} to cylindrical vector radius {_r}, yaw loop-value, height 0
+		draw 1 of dust using dustOption({_t1}, {_t2}) at {_l} ~ {_v} with extra 0.4
+
+on right click:
+	"%region at player%" does not contain "spawn"
+	name of player's tool is "&9Water Staff &8| &bWave &8[&7💎💎💎💎💎&8]":
+		{pvptoggle.%player's uuid%.pvptoggle} is not the player
+		if difference between now and {WaterWave.%player's uuid%.WaterStaffWave} is less than 45 seconds:
+			cancel event
+			message "&8[&c✖&8] &cWave is on cooldown! &8(%difference between {WaterWave.%player's uuid%.WaterStaffWave} and (45 seconds before now)%)" to player
+		else:
+			set {WaterWave.%player's uuid%.WaterStaffWave} to now
+			set {_waveabilcol2} to 255
+			set {_wavehieght} to 0.1
+			set {_r} to 0.3
+			play sound "entity.player.splash.high_speed" at pitch 1 to player
+			set {_loc} to location at player
+			loop 15 times:
+				WaveCircle(location {_wavehieght} above {_loc}, {_r}, rgb(0, {_waveabilcol2}, 229), 1)
+	#			draw 1 dust using dustOption(rgb({_waveabilcol1}, {_waveabilcol2}, {_waveabilcol3}), 1) at circle((location at and {_wavehieght} above {_loc}), {_r}, 0.4, 0, 0)
+				set {_r} to {_r} * 1.23
+				subtract 12 from {_waveabilcol2}
+				set {_wavehieght} to {_wavehieght} * 1.23
+				wait 1 tick
+				loop all players in radius {_r} around location {_wavehieght} above player where [input is not the player]:
+					loop-player does not have permission "op"
+					loop-player does not have scoreboard tag "NPC"
+					region at loop-player is "main" parsed as region
+					{pvptoggle.%loop-player's uuid%.pvptoggle} is not the loop-player
+					push loop-player upwards at speed 3
+					push loop-player backwards at speed 1
+					damage loop-player by 3
+					play sound "entity.player.splash.high_speed" at pitch 1 to loop-player
+					add loop-player to {_list::*}
+					if {_list::*} does not contain loop-player:
+						message "&bYou got hit by %player%'s waves!" to loop-player
+				
+on right click:
+	name of player's tool contains "&9Water Staff &8| &bWater Hook":
+		if difference between now and {WaterHook.%player's uuid%.WaterHook.lastUsed} is less than 5 seconds:
+			cancel event
+			stop
+		else:
+			set {_target} to player's target
+			"%region at {_target}%" does not contain "spawn"
+			{_target} does not have permission "op"
+			{_target} does not have scoreboard tag "NPC"
+			set {_v} to vector from {_target} to player
+			set {WaterHook.%player's uuid%.WaterHook.lastUsed} to now
+			push player's target {_v} at speed 2
+			push player's target upwards at speed 0.6
+			show blue dust at line({_target}, player, 0.1)
+
+
+function line(loc1: location, loc2: location, step-size: number=0.25) :: locations:
+    set {_v} to vector from {_loc1} to {_loc2}
+    set vector length of {_v} to {_step-size}
+
+    loop floor((distance between {_loc1} and {_loc2}) / {_step-size}) times:
+        set {_locs::%loop-number%} to {_loc1}
+        set {_loc1} to {_loc1} ~ {_v}
+
+    return {_locs::*}
+
+
+function circle(center: location, radius: number, step-size: number = 10, yaw: number = 0, pitch: number = 0) :: locations:
+    set {_reference} to vector from yaw {_yaw} + 90 and pitch 0
+    set {_v} to spherical vector with radius {_radius}, yaw 0, pitch 0
+
+    loop floor(360 / {_step-size}) times:
+        set {_temp-v} to {_v}
+        if {_pitch} is not 0:
+            rotate {_temp-v} around {_reference} by {_pitch}
+        set {_locs::%loop-number%} to {_center} ~ {_temp-v}
+        add {_step-size} to yaw of {_v} 
+
+    return {_locs::*}
+
+function regularPolygon(center: location, radius: number, sides: number, step-size: number = 0.25, offset: number = 0, yaw: number = 0, pitch: number = 0) :: locations:
+    set {_reference} to vector from yaw {_yaw} + 90 and pitch 0
+    set {_v} to spherical vector radius {_radius}, yaw {_offset}, pitch 0
+    loop {_sides} times:
+        set {_temp-v} to {_v}
+        if {_pitch} is not 0:
+            rotate {_temp-v} around {_reference} by {_pitch}
+        set {_loc::%loop-number%} to {_center} ~ {_temp-v}
+        add 360 / {_sides} to yaw of {_v}
+
+    loop {_sides} times:
+        if loop-number != {_sides}:
+            add line({_loc::%loop-number%}, {_loc::%loop-number + 1%}) to {_locs::*}
+        else:
+            add line({_loc::%loop-number%}, {_loc::1}) to {_locs::*}
+
+    return {_locs::*}
+			
+on damage:
+	if {WaterShield.%victim's uuid%.WaterShield} is true:
+		attacker is a player:
+			set {_AttYaw} to attacker's yaw
+			set {_VicsYaw} to victim's yaw
+			set {_VicYawPointONE} to {_VicsYaw} + 90
+			set {_VicYawPointTWO} to {_VicsYaw} - 90
+			if {_AttYaw} is not between {_VicYawPointONE} and {_VicYawPointTWO}:
+				cancel event
+				message "&7%victim% dodged your attack with the &bWater Shield&7!" to attacker
+		if {WaterShieldMaxed.%victim's uuid%.WaterShieldMaxed} is true:
+			set {_AttYaw} to attacker's yaw
+			set {_VicsYaw} to victim's yaw
+			set {_VicYawPointONE} to {_VicsYaw} + 45
+			set {_VicYawPointTWO} to {_VicsYaw} - 45
+			if {_AttYaw} is not between {_VicYawPointONE} and {_VicYawPointTWO}:
+				cancel event
+				message "&7%victim% dodged your attack with the &bWater Shield&7!" to attacker
+			
+command /watershieldfull:
+    permission: sk.dev
+    trigger:
+        loop 500 times:
+            set {_pitch} to -1 * player's pitch + 90
+            set {_yaw} to player's yaw
+            set {_offset} to spherical vector with radius 1.5, yaw player's yaw, pitch player's pitch
+            set {_loc} to player's head's location ~ {_offset}
+            #
+            show water bubble at circle(({_loc}), 1.5, 10, {_yaw}, {_pitch})
+            show water bubble at circle(({_loc}), 4, 2, {_yaw}, {_pitch})
+            show water bubble at circle(({_loc}), 4.45, 2, {_yaw}, {_pitch})
+            #
+            show water bubble at regularPolygon(({_loc}), 4, 6, 0.25, {_yaw}, {_yaw}, {_pitch})
+            show water bubble at regularPolygon(({_loc}), 3.6, 5, 0.1, 71.5 + {_yaw}, {_yaw}, {_pitch})
+            show water bubble at regularPolygon(({_loc}), 3, 3, 0.1, 60 + {_yaw}, {_yaw}, {_pitch})
+            wait 1 ticks
+		
+		
+command /watervariableshielddelete [<offline player>]:
+	permission: sk.dev
+	trigger:
+		delete {WaterShield.%arg-1's uuid%.WaterShield}
+		
+on right click:
+	name of player's tool is "&9Water Staff &8| &bWater Shield &8[&7💎💎💎💎💎&8]":
+		if difference between now and {WATERSHIELDNEW.%player's uuid%.WATERSHIELDNEW.lastUsed} is less than 90 seconds:
+			cancel event
+			message "&8[&c✖&8] &cWater Shield is on cooldown! &8(%difference between {WATERSHIELDNEW.%player's uuid%.WATERSHIELDNEW.lastUsed} and (90 seconds before now)%)" to player
+		else:
+			set {WATERSHIELDNEW.%player's uuid%.WATERSHIELDNEW.lastUsed} to now
+			set {WaterShield.%player's uuid%.WaterShield} to true
+			play sound "block.beacon.activate" at pitch 2 to player
+			loop 100 times:
+				set {_pitch} to -1 * player's pitch + 90
+				set {_yaw} to player's yaw
+				set {_offset} to spherical vector with radius 1.5, yaw player's yaw, pitch player's pitch
+				set {_loc} to player's head's location ~ {_offset}
+			#
+				show water bubble at circle(({_loc}), 0.75, 10, {_yaw}, {_pitch})
+			#
+				show water bubble at regularPolygon(({_loc}), 2, 6, 0.25, {_yaw}, {_yaw}, {_pitch})
+				show water bubble at regularPolygon(({_loc}), 2, 6, 0.25, 60 + {_yaw}, {_yaw}, {_pitch})
+				show water bubble at regularPolygon(({_loc}), 1.5, 3, 0.1, 60 + {_yaw}, {_yaw}, {_pitch})
+				wait 5 tick
+			delete {WaterShield.%player's uuid%.WaterShield}
+			
+on right click:
+	name of player's tool is "&9Water Staff &8| &bWater Shield &8[&c💎💎&7💎💎💎&8]":
+		if difference between now and {WATERSHIELDNEW.%player's uuid%.WATERSHIELDNEW.lastUsed} is less than 90 seconds:
+			cancel event
+			message "&8[&c✖&8] &cWater Shield is on cooldown! &8(%difference between {WATERSHIELDNEW.%player's uuid%.WATERSHIELDNEW.lastUsed} and (90 seconds before now)%)" to player
+		else:
+			set {WATERSHIELDNEW.%player's uuid%.WATERSHIELDNEW.lastUsed} to now
+			set {WaterShield.%player's uuid%.WaterShield} to true
+			play sound "block.beacon.activate" at pitch 2 to player
+			loop 100 times:
+				set {_pitch} to -1 * player's pitch + 90
+				set {_yaw} to player's yaw
+				set {_offset} to spherical vector with radius 1.5, yaw player's yaw, pitch player's pitch
+				set {_loc} to player's head's location ~ {_offset}
+			#
+				show water bubble at circle(({_loc}), 0.75, 10, {_yaw}, {_pitch})
+			#
+				show water bubble at regularPolygon(({_loc}), 2, 6, 0.25, {_yaw}, {_yaw}, {_pitch})
+				show water bubble at regularPolygon(({_loc}), 2, 6, 0.25, 60 + {_yaw}, {_yaw}, {_pitch})
+				show water bubble at regularPolygon(({_loc}), 1.5, 3, 0.1, 60 + {_yaw}, {_yaw}, {_pitch})
+				wait 5 tick
+			delete {WaterShield.%player's uuid%.WaterShield}
