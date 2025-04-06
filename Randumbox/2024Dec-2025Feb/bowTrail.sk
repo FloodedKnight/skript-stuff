@@ -1,0 +1,157 @@
+on shoot:
+	if name of shooter's tool contains "&5End Bow":
+		endbowtrail(shooter, event-projectile)
+
+on left click:
+	if name of player's tool is "&5End Bow &8[&b💎&7💎💎💎💎&8]":
+		if player has 1 of arrow:
+			remove 1 of arrow from player's inventory
+			wait 3 tick
+			make player shoot an arrow at speed 3
+		else:
+			message "&8[&c✖&8] &7You're out of arrows!" to player
+		
+	
+on left click:
+	if name of player's tool is "&5End Bow &8[&b💎💎&7💎💎💎&8]":
+		if player has 3 of arrow:
+			remove 3 of arrow from player's inventory
+			wait 3 tick
+			make player shoot an arrow at speed 3
+			push last shot projectile right at speed 0.8
+			make player shoot an arrow at speed 3
+			push last shot projectile left at speed 0.8
+			make player shoot an arrow at speed 3
+		else:
+			message "&8[&c✖&8] &7You're out of arrows!" to player
+			
+on left click:
+	if name of player's tool is "&5End Bow &8[&b💎💎💎&7💎💎&8]":
+		if player has 1 of arrow:
+			remove 1 of arrow from player's inventory
+			wait 3 tick
+			make player shoot an arrow at speed 3
+			push last shot projectile right at speed 0.8
+			make player shoot an arrow at speed 3
+			push last shot projectile left at speed 0.8
+			make player shoot an arrow at speed 3
+		else:
+			message "&8[&c✖&8] &7You're out of arrows!" to player
+			
+on left click:
+	if name of player's tool is "&5End Bow &8[&b💎💎💎💎&7💎&8]":
+		if player has 1 of arrow:
+			chance of 50%:
+				remove 1 of arrow from player's inventory
+			wait 3 tick
+			make player shoot an arrow at speed 3
+			push last shot projectile right at speed 0.8
+			make player shoot an arrow at speed 3
+			push last shot projectile left at speed 0.8
+			make player shoot an arrow at speed 3
+		else:
+			message "&8[&c✖&8] &7You're out of arrows!" to player
+		
+on left click:
+	if name of player's tool is "&5End Bow &8[&b💎💎💎💎💎&8]":
+		if player has 1 of arrow:
+			chance of 10%:
+				remove 1 of arrow from player's inventory
+			wait 3 tick
+			make player shoot an arrow at speed 3
+			push last shot projectile right at speed 0.8
+			make player shoot an arrow at speed 3
+			push last shot projectile left at speed 0.8
+			make player shoot an arrow at speed 3
+		else:
+			message "&8[&c✖&8] &7You're out of arrows!" to player		
+			
+on right click:
+	if name of player's tool is "&5End Bow &8[&b💎💎💎💎💎&8]":
+		if player has 1 of arrow:
+			chance of 10%:
+				remove 1 of arrow from player's inventory
+			wait 3 tick
+			make player shoot an arrow at speed 3
+			push last shot projectile right at speed 0.8
+			make player shoot an arrow at speed 3
+			push last shot projectile left at speed 0.8
+			make player shoot an arrow at speed 3
+		else:
+			message "&8[&c✖&8] &7You're out of arrows!" to player	
+		
+function endbowtrail(p: player, arrow: projectile):
+	if {BowTrail::%{_p}'s uuid%::SoulFlame} is true:
+		loop 80 times:
+			if {_arrow} is alive:
+				show soul fire flame at {_arrow}
+				wait 1 ticks
+			else:
+				stop
+		stop
+	if {BowTrail::%{_p}'s uuid%::Firework} is true:
+		loop 80 times:
+			if {_arrow} is alive:
+				show firework's spark at {_arrow}
+				wait 1 ticks
+			else:
+				stop
+		stop
+	if {BowTrail::%{_p}'s uuid%::HappyVillager} is true:
+		loop 80 times:
+			if {_arrow} is alive:
+				show happy villager at {_arrow}
+				wait 1 ticks
+			else:
+				stop
+		stop
+	if {BowTrail::%{_p}'s uuid%::Hearts} is true:
+		loop 80 times:
+			if {_arrow} is alive:
+				show heart at {_arrow}
+				wait 1 ticks
+			else:
+				stop
+		stop
+	if {BowTrail::%{_p}'s uuid%::OrangeFlame} is true:
+		loop 80 times:
+			if {_arrow} is alive:
+				show flame at {_arrow}
+				wait 1 ticks
+			else:
+				stop
+		stop
+	if {BowTrail::%{_p}'s uuid%::WaterSplash} is true:
+		loop 80 times:
+			if {_arrow} is alive:
+				show 5 water splash at {_arrow}
+				wait 1 ticks
+			else:
+				stop
+		stop
+	if {BowTrail::%{_p}'s uuid%::AngryVillager} is true:
+		loop 80 times:
+			if {_arrow} is alive:
+				show angry villager at {_arrow}
+				wait 1 ticks
+			else:
+				stop
+		stop
+	if {BowTrail::%{_p}'s uuid%::RandomColor} is true:
+		set {_r1} to random integer between 1 and 255
+		set {_r2} to random integer between 1 and 255
+		set {_r3} to random integer between 1 and 255
+		loop 80 times:
+			if {_arrow} is alive:
+				draw 1 dust using dustOption(rgb({_r1}, {_r2}, {_r3}), 1) at {_arrow}
+				wait 1 ticks
+			else:
+				stop
+		stop
+	if {BowTrail::%{_p}'s uuid%::None} is true:
+		stop
+
+on projectile hit:
+	if event-projectile is an arrow:
+		wait 10 ticks
+		kill event-projectile
