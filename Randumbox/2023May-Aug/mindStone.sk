@@ -1,0 +1,23 @@
+on damage:
+	attacker is a player:
+		victim is a player:
+			if attacker has 1 of {InfinityGauntlet}:
+				if name of attacker's tool is not "&4&l&kM&c&lI&6&lN&e&lF&a&lI&b&lN&9&lI&5&lT&c&lY &6&lGAUNTLET&4&l&kM":
+					chance of 10%:
+						set {_randomMindStone} to a random integer between 1 and 7
+						message "&8[§x§f§b§d§1§0§0◆&8] &c%attacker% &cis using the §x§f§b§d§1§0§0Mind Stone &con you." to victim
+						send action bar "&8USING &8| §x§f§b§d§1§0§0Mind Stone &r&8|" to attacker
+						if {_randomMindStone} is 1:
+							send title "§x§f§b§d§1§0§0&lYOU CANNOT WIN." to victim
+						if {_randomMindStone} is 2:
+							send title "§x§f§b§d§1§0§0&lGIVE UP." to victim
+						if {_randomMindStone} is 3:
+							apply nausea to victim for 5 seconds
+						if {_randomMindStone} is 4:
+							apply blindness to victim for 5 seconds
+						if {_randomMindStone} is 5:
+							send title "§x§f§b§d§1§0§0&lJust stop now." to victim
+						if {_randomMindStone} is 6:
+							send title "§x§f§b§d§1§0§0&lThere is no hope for you." to victim
+						if {_randomMindStone} is 7:
+							send title "§x§f§b§d§1§0§0&lStop trying." to victim
