@@ -1,0 +1,80 @@
+on join:
+	if {MechanicalScytheLevel::%player's uuid%} is not set:
+		set {RegeneratingUses::%player's uuid%} to true
+		wait 60 seconds
+		set {EndScytheUses::%player's uuid%} to 25
+	if {MechanicalScytheLevel::%player's uuid%} is 1:
+		set {RegeneratingUses::%player's uuid%} to true
+		wait 60 seconds
+		set {EndScytheUses::%player's uuid%} to 45
+	delete {RegeneratingUses::%player's uuid%}
+
+
+on right click:
+	name of player's tool = "&8Mechanical Scythe":
+		if {EndScytheUses::%player's uuid%} = 0:
+			cancel event
+			message "&8[&c✖&8] &8Mechanical Scythe &cis out of uses! &7%{EndScytheUses::%player's uuid%}%/15 Uses" to player
+			stop
+		if {RegeneratingUses::%player's uuid%} is true:
+			cancel event
+			message "&8[&c✖&8] &7Your uses are regenerating since you just joined the game!" to player
+			stop
+		set {_time} to difference between {Randumcombat::%player's uuid%} and now
+		if {_time} < 5 seconds:
+			send action bar "&8[&c✖&8] &cYou can't use this while in combat!" to player
+			stop
+		else:
+			mechanicalscythe(player)
+
+			
+function mechanicalscythe(p: player):
+	if {MechanicalScytheLevel::%{_p}'s uuid%} is not set:
+		if {EndScytheUses::%{_p}'s uuid%} > 0:
+			subtract 1 from {EndScytheUses::%{_p}'s uuid%}
+			send action bar "&7Mechanical Scythe (-1 Use) &8(%{EndScytheUses::%{_p}'s uuid%}%/25 Uses)" to {_p}
+			set {_pitch} to -1 * {_p}'s pitch + 90
+			set {_yaw} to {_p}'s yaw
+			set {_offset} to spherical vector with radius 1, yaw {_p}'s yaw, pitch {_p}'s pitch
+			set {_loc} to location 1 meter below and 3 meters in front of {_p}'s eyes
+				
+			draw 1 dust using dustOption(rgb(78, 78, 78), 1) at circle(({_loc}), 2, 10, {_yaw}, {_pitch})
+			draw 1 dust using dustOption(rgb(10, 10, 10), 1) at circle(({_loc}), 2, 5, {_yaw}, {_pitch})
+				
+			set {_loc} to location 3 meters in front of {_p}'s eyes
+			set {_v} to vector from {_p} to {_loc}
+			push {_p} {_v} at speed 0.8
+			loop all players in radius 6 around {_p}:
+				play sound "entity.wither.shoot" at pitch 1.5 to loop-player
+			wait 30 seconds
+			if {EndScytheUses::%{_p}'s uuid%} < 25:
+				add 1 to {EndScytheUses::%{_p}'s uuid%}
+				send action bar "&7Mechanical Scythe (+1 Use) &8(%{EndScytheUses::%{_p}'s uuid%}%/25 Uses)" to {_p}
+			else:
+				stop
+				
+				
+				
+	if {MechanicalScytheLevel::%{_p}'s uuid%} is 1:
+		if {EndScytheUses::%{_p}'s uuid%} > 0:
+			subtract 1 from {EndScytheUses::%{_p}'s uuid%}
+			send action bar "&7Mechanical Scythe (-1 Use) &8(%{EndScytheUses::%{_p}'s uuid%}%/45 Uses)" to {_p}
+			set {_pitch} to -1 * {_p}'s pitch + 90
+			set {_yaw} to {_p}'s yaw
+			set {_offset} to spherical vector with radius 1, yaw {_p}'s yaw, pitch {_p}'s pitch
+			set {_loc} to location 1 meter below and 3 meters in front of {_p}'s eyes
+				
+			draw 1 dust using dustOption(rgb(78, 78, 78), 1) at circle(({_loc}), 2, 10, {_yaw}, {_pitch})
+			draw 1 dust using dustOption(rgb(10, 10, 10), 1) at circle(({_loc}), 2, 5, {_yaw}, {_pitch})
+				
+			set {_loc} to location 3 meters in front of {_p}'s eyes
+			set {_v} to vector from {_p} to {_loc}
+			push {_p} {_v} at speed 0.8
+			loop all players in radius 6 around {_p}:
+				play sound "entity.wither.shoot" at pitch 1.5 to loop-player
+			wait 30 seconds
+			if {EndScytheUses::%{_p}'s uuid%} < 45:
+				add 1 to {EndScytheUses::%{_p}'s uuid%}
+				send action bar "&7Mechanical Scythe (+1 Use) &8(%{EndScytheUses::%{_p}'s uuid%}%/45 Uses)" to {_p}
+			else:
+				stop
