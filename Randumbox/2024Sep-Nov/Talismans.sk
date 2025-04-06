@@ -1,0 +1,365 @@
+on death:
+	if victim's off hand item is orange dye:
+		if uncolored name of victim's off hand item contains "Arena Talisman":
+			arenatalisman(victim)
+	else if string tag "talisman;type" of nbt compound of victim's off hand tool contains "arena":
+		arenatalisman(victim)
+	
+#---------------------------------------------------------------------------------------------
+function arenatalisman(p: player):
+	apply resistance 5 to {_p} for 20 ticks
+	if {_p}'s world is "world":
+		if {_p}'s x coordinates are between 628 and 692:
+			if {_p}'s z coordinates are between -72 and -2:
+				wait 0.4 seconds
+				teleport {_p} to location(663.5, 4.1, -37.5, world "world", 0, 0) # infinty arena
+
+	if {_p}'s world is "world":
+		if {_p}'s x coordinates are between 359 and 429:
+			if {_p}'s z coordinates are between -76 and -6:
+				wait 0.4 seconds
+				teleport {_p} to location(394.5, 4.1, -41.5, world "world", 0, 0) # colloseum arena
+			
+		
+	if {_p}'s world is "world_the_end":
+		wait 0.4 seconds
+		teleport {_p} to last death location of {_p}
+		apply night vision to {_p} for 100 minutes
+		if {EnderMageSpawned} is true:
+			teleport {_p} to location(0.5, 156.5, 0.5, world "world_the_end", 0, 0)
+
+# OCEAN OCEAN OCEAN OCEAN OCEAN OCEAN OCEAN
+	if {_p}'s world is "world":
+		if {_p}'s x coordinates are between -97 and -60:
+			if {_p}'s z coordinates are between 191 and 155:
+				wait 0.4 seconds
+				teleport {_p} to location(-78, 8, 173, world "world", 0, 0)
+				apply night vision 2 to {_p} for 100 minute
+
+	if {_p}'s world is "world":
+		if {_p}'s x coordinates are between -134 and -171:
+			if {_p}'s z coordinates are between 155 and 191:
+				wait 0.4 seconds
+				teleport {_p} to location(-152, 7, 171, world "world", 0, 0)
+				apply night vision 2 to {_p} for 100 minutes 
+
+	if {_p}'s world is "world":
+		if {_p}'s x coordinates are between -208 and -244:
+			if {_p}'s z coordinates are between 191 and 155:
+				wait 0.4 seconds
+				teleport {_p} to location(-224, 5, 170, world "world", 0, 0)
+				apply night vision 2 to {_p} for 100 minutes 
+
+	if {_p}'s world is "world":
+		if {_p}'s x coordinates are between -272 and -309:
+			if {_p}'s z coordinates are between 191 and 155:
+				wait 0.4 seconds
+				teleport {_p} to location(-294, 8, 175, world "world", 0, 0)
+				apply night vision 2 to {_p} for 100 minutes
+#---------------------------------------------------------------------------------------------
+		
+
+
+on mine:
+	if any:
+		name of player's off hand tool contains "§x§f§b§b§1§5§aMining Talisman &8[&7💎💎&8]"
+		string tag "talisman;type" of nbt compound of player's off hand tool contains "mining"
+	then:
+		miningtalisman(player, event-block, 0.015)
+		remove mining fatigue from the player
+		
+on mine:
+	if any:
+		name of player's off hand tool contains "§x§f§b§b§1§5§aMining Talisman &8[&a💎&7💎&8]"
+		string tag "talisman;type" of nbt compound of player's off hand tool contains "mining2"
+	then:
+		miningtalisman(player, event-block, 0.0175)
+
+
+function miningtalisman(p: player, b: block, chance: number):
+	if {_b} is diamond ore:
+		chance of {_chance}%:
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1 
+			give {_p} 1 of {_Bonus} named "&bBonus Diamonds"
+			message "&6&lRARE DROP! &bBonus Diamonds &d(%{_chance}%%%)" to {_p}
+			raredropSFX({_p})
+			
+	if {_b} is redstone ore:
+		chance of {_chance}%:
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1
+			raredropSFX({_p})
+			give {_p} 1 of {_Bonus} named "&cBonus Redstone"
+			message "&6&lRARE DROP! &cBonus Redstone &d(%{_chance}%%%)" to {_p}
+			
+	if {_b} is gold ore:
+		chance of {_chance}%:
+			set {_Bonus} to end rod with hide enchants item flag
+			raredropSFX({_p})
+			enchant {_Bonus} with soul speed 1 
+			give {_p} 1 of {_Bonus} named "&eBonus Gold"
+			message "&6&lRARE DROP! &eBonus Gold &d(%{_chance}%%%)" to {_p}
+			
+	if {_b} is iron ore:
+		chance of {_chance}%:
+			raredropSFX({_p})
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1
+			give {_p} 1 of {_Bonus} named "&fBonus Iron"
+			message "&6&lRARE DROP! &fBonus Iron &d(%{_chance}%%%)" to {_p}
+			
+	if {_b} is stone:
+		chance of {_chance}%:
+			raredropSFX({_p})
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1 
+			give {_p} 1 of {_Bonus} named "&7Bonus Stone"
+			message "&6&lRARE DROP! &7Bonus Stone &d(%{_chance}%%%)" to {_p}
+			
+	if {_b} is emerald ore:
+		chance of {_chance}%:
+			raredropSFX({_p})
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1 
+			give {_p} 1 of {_Bonus} named "&aBonus Emeralds"
+			message "&6&lRARE DROP! &aBonus Emeralds &d(%{_chance}%%%)" to {_p}
+			
+	if {_b} is obsidian:
+		chance of {_chance}%:
+			raredropSFX({_p})
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1 
+			give {_p} 1 of {_Bonus} named "&x&9&8&6&3&E&7Bonus Obsidian"
+			message "&6&lRARE DROP! &x&9&8&6&3&E&7Bonus Obsidian &d(%{_chance}%%%)" to {_p}
+			
+	if {_b} is lapis ore:
+		chance of {_chance}%:
+			raredropSFX({_p})
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1 
+			give {_p} 1 of {_Bonus} named "&9Bonus Lapis"
+			message "&6&lRARE DROP! &9Bonus Lapis &d(%{_chance}%%%)" to {_p}
+			
+	if {_b} is coal ore:
+		chance of {_chance}%:
+			raredropSFX({_p})
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1 
+			give {_p} 1 of {_Bonus} named "&8Bonus Coal"
+			message "&6&lRARE DROP! &8Bonus Coal &d(%{_chance}%%%)" to {_p}
+			
+	if {_b} is oak log:
+		chance of {_chance}%:
+			raredropSFX({_p})
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1
+			give {_p} 1 of {_Bonus} named "&x&B&7&9&8&6&7Bonus Wood"
+			message "&6&lRARE DROP! &x&B&7&9&8&6&7Bonus Wood &d(%{_chance}%%%)" to {_p}
+			
+	if {_b} is sea lantern:
+		chance of {_chance}%:
+			raredropSFX({_p})
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1
+			give {_p} 1 of {_Bonus} named "&bBonus Sea Lanterns"
+			message "&6&lRARE DROP! &bBonus Sea Lanterns &d(%{_chance}%%%)" to {_p}
+			
+	if {_b} is prismarine:
+		chance of {_chance}%:
+			raredropSFX({_p})
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1
+			give {_p} 1 of {_Bonus} named "&bBonus Prismarine"
+			message "&6&lRARE DROP! &bBonus Prismarine &d(%{_chance}%%%)" to {_p}
+			
+	if {_b} is dark prismarine:
+		chance of {_chance}%:
+			raredropSFX({_p})
+			set {_Bonus} to end rod with hide enchants item flag
+			enchant {_Bonus} with soul speed 1
+			give {_p} 1 of {_Bonus} named "&3Bonus Dark Prismarine"
+			message "&6&lRARE DROP! &3Bonus Dark Prismarine &d(%{_chance}%%%)" to {_p}
+			
+				
+on mine of oak log or spruce log:
+	if any:
+		name of player's off hand tool contains "&6Wood Talisman"
+		string tag "talisman;type" of nbt compound of player's off hand tool contains "wood"
+	then:
+		woodtalisman(player, event-block)
+		
+on mine of oak log or spruce log:
+	if any:
+		name of player's off hand tool contains "&6Wood Talisman &8[&a💎&7💎&8]"
+		string tag "talisman;type" of nbt compound of player's off hand tool contains "wood2"
+	then:
+		chance of 15%:
+			woodtalisman(player, event-block)
+			
+on mine of oak log or spruce log:
+	if any:
+		name of player's off hand tool contains "&6Wood Talisman &8[&a💎💎&8]"
+		string tag "talisman;type" of nbt compound of player's off hand tool contains "wood3"
+	then:
+		chance of 25%:
+			woodtalisman(player, event-block)
+	
+function woodtalisman(p: player, b: block):
+	if "%region at {_b}%" contains "wood" or "thevoiddimension":
+		give {_p} 1 of {_b}
+			
+on place:
+	"%region at event-block%" contains "mine":
+		cancel event
+				
+on right click:
+	if player's tool is stick named "&dHealing Wand":
+		if player is not sneaking:
+			if difference between now and {healingwandCD::%player's uuid%} is less than 90 seconds:
+				cancel event
+				message "&8[&c✖&8] &cHealing Wand is on cooldown! &8(%difference between {healingwandCD::%player's uuid%} and (90 seconds before now)%)" to player
+			else:
+				apply regeneration 255 to player for 3 seconds
+				apply absorption 5 to player for 10 seconds
+				draw 100 of dust using dustOption(rgb(34, 230, 106), 1) at player ~ vector(0, 0, 0) with offset vector(0.5, 1, 0.5)
+				wait 1 tick
+				play sound "block.grass.break" at pitch 0 to player
+				message "&8[&d❤&8] &dYou used the healing wand!" to player
+				set {healingwandCD::%player's uuid%} to now
+		if player is sneaking:
+			if difference between now and {grouphealingCD::%player's uuid%} is less than 180 seconds:
+				cancel event
+				message "&8[&c✖&8] &cHealing Wand is on cooldown! &8(%difference between {grouphealingCD::%player's uuid%} and (3 minutes before now)%)" to player
+			else:
+				loop all players in radius 5 around player:
+					apply regeneration 255 to loop-player for 2 seconds
+					apply absorption 4 to loop-player for 7 seconds
+					draw 100 of dust using dustOption(rgb(34, 230, 106), 1) at loop-player ~ vector(0, 0, 0) with offset vector(0.5, 1, 0.5)
+					wait 1 tick
+					play sound "block.grass.break" at pitch 0 to loop-player
+					message "&8[&d💕&8] &d%player% used the healing wand!" to loop-player
+					set {grouphealingCD::%player's uuid%} to now
+					
+on right click with diamond sword:
+	if name of event-item is "&8Undead Sword &8[&7💎💎💎💎&8]":
+		{pvptoggle.%player's uuid%.pvptoggle} is not the player
+		if difference between now and {UndeadSwordRclick.%player's uuid%.UndeadSwordRclick} is less than 2 minutes:
+			message "&8[&c✖&8] &cUndead Sword is on cooldown! &8(%difference between {UndeadSwordRclick.%player's uuid%.UndeadSwordRclick} and (2 minutes before now)%)" to player
+			stop
+		else:
+			"%region at player%" contains "arena" or "arena2" or "main":
+				loop 25 times:
+					make player shoot wither skull at speed 1
+					wait 3 ticks
+					push last spawned wither skull forward at speed 10
+					loop all players in radius 5 of player:
+						play sound "entity.wither.shoot" to loop-player
+					set {UndeadSwordRclick.%player's uuid%.UndeadSwordRclick} to now
+			else:
+				message "&8[&c✖&8] &7You must be in the box to do that!" to player
+			
+on damage:
+	name of attacker's tool contains "&8Undead Sword":
+		if damage cause is projectile:
+			{pvptoggle.%victim's uuid%.pvptoggle} is not the victim
+			damage victim by 60
+			
+on damage:
+	name of attacker's tool contains "&8Undead Sword":
+		{pvptoggle.%attacker's uuid%.pvptoggle} is not the attacker
+		{pvptoggle.%victim's uuid%.pvptoggle} is not the victim
+		if damage cause is an attack:
+			chance of 80%:
+				if {UndeadSwordMinionCD.%attacker's uuid%.UndeadSwordMinionCooldown} is not set:
+					loop 360 times:
+						set {_v} to spherical vector radius 6, yaw 2 * loop-value, pitch 0
+						draw 5 of dust using dustOption(rgb(71, 71, 71),1) at attacker ~ {_v} with extra 0    
+						if mod(loop-value, 60) = 0:
+							set {_lv} to vector from attacker ~ {_v}
+							set {_lvz} to (attacker ~ {_lv})
+					spawn wolf 3 blocks to the left of the attacker
+					wait 1 tick
+					set last spawned wolf's owner to the attacker
+					wait 1 tick
+					set max health of last spawned wolf to 300
+					set health of last spawned wolf to 300
+					set last spawned wolf's attack damage attribute to 90
+					set name of last spawned wolf to "&7%attacker's name% Undead Minions"
+					set last spawned wolf's movement speed attribute to 0.50
+					set the last spawned wolf's target to the victim
+					add last spawned wolf to {_list::*}
+					wait 1 tick
+					#
+					#
+					#
+					#
+					#
+					spawn wolf 3 blocks to the right of the attacker
+					wait 1 tick
+					set last spawned wolf's owner to the attacker
+					wait 1 tick
+					set max health of last spawned wolf to 300
+					set health of last spawned wolf to 300
+					set last spawned wolf's attack damage attribute to 90
+					set name of last spawned wolf to "&7%attacker's name% Undead Minions"
+					set last spawned wolf's movement speed attribute to 0.50
+					set the last spawned wolf's target to the victim
+					add last spawned wolf to {_list::*}
+					wait 1 tick
+					#
+					#
+					#
+					#
+					#
+					spawn wolf at the attacker
+					wait 1 tick
+					set last spawned wolf's owner to the attacker
+					wait 1 tick
+					set max health of last spawned wolf to 300
+					set health of last spawned wolf to 300
+					set last spawned wolf's attack damage attribute to 90
+					set name of last spawned wolf to "&7%attacker's name% Undead Minions"
+					set last spawned wolf's movement speed attribute to 0.50
+					set the last spawned wolf's target to the victim
+					add last spawned wolf to {_list::*}
+					wait 1 tick
+					set {UndeadSwordMinionCD.%attacker's uuid%.UndeadSwordMinionCooldown} to false
+					wait 45 seconds
+					loop {_list::*}:
+						delete entity within loop-value
+					delete {UndeadSwordMinionCD.%attacker's uuid%.UndeadSwordMinionCooldown}
+					stop
+				if {UndeadSwordMinionCooldown.%attacker's uuid%.UndeadSwordMinionCooldown} is false:
+					stop
+					
+
+			
+
+			
+command /circlecolortest:
+	permission: test.circle
+	trigger:
+		set {_r} to 2
+		set {_y} to 2
+		set {_p} to player's pitch
+		set {_x} to 2
+		loop 10 times:
+			set {_r1} to random integer between 1 and 256
+			set {_r2} to random integer between 1 and 256
+			set {_r3} to random integer between 1 and 256
+			loop 360 times:
+				set {_v} to spherical vector radius {_r}, yaw {_y} * loop-value-2, pitch {_p}
+				draw 5 of dust using dustOption(rgb({_r1}, {_r2}, {_r3}),1) {_x} meter in front of player's eyes ~ {_v} with extra 0
+			wait 10 ticks
+			add 0.2 to {_r}
+			add 0.2 to {_x}
+#				add 10 to {_y}
+
+command /animationtest:
+	permission: sk.dev
+	trigger:
+		set {_r} to 3
+		loop 360 times:
+			set {_v} to spherical vector radius {_r}, yaw loop-value, pitch 0
+			draw 5 of dust using dustOption(orange,3) at location at player ~ {_v} with extra 0
