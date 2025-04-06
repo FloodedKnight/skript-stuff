@@ -1,0 +1,92 @@
+on inventory click:
+	name of player's inventory is "&5The Portal to The Void":
+		if event-slot is not 13:
+			cancel event
+			play sound "ui.button.click" at pitch 2	
+		if event-slot is 13:
+			cancel event
+			close player's inventory
+			set {VoidDimensionCooldown::%player's uuid%::VoidDimensionCooldown} to now
+			set {_xp} to player's level
+			if {_xp} >= 300:
+				set {_xp} to {_xp} - 300
+				set {_time} to 300
+				set {_time} to {_time} + ({_xp} * 5)
+				set {_time} to {_time} + 900
+				play sound "block.bell.resonate" at volume 999 at pitch 0 for player
+				apply potion of blindness of tier 5 to the player for 5 seconds
+				wait 4 seconds
+				set {InTheVoidDimension::%player's uuid%} to true
+				teleport player to location(206, 54.3, -423.88, world "world_the_end", -90, -30)
+				wait ("%{_time}% seconds" parsed as timespan)
+				
+				if {InTheVoidDimension::%player's uuid%} is true:
+					play sound "block.bell.resonate" at volume 999 at pitch 0 for player
+					apply potion of blindness of tier 5 to the player for 5 seconds
+					wait 4 seconds
+					teleport player to {spawn}
+					message "&5Your time in &dThe Void &5ran out." to player
+					set {VoidDimensionCooldown::%player's uuid%::VoidDimensionCooldown} to now
+					delete {InTheVoidDimension::%player's uuid%}
+					stop
+					
+					
+					
+			if {_xp} < 300:
+				set {_time} to {_xp}
+				set {_time} to {_time} + 900
+				play sound "block.bell.resonate" at volume 999 at pitch 0 for player
+				apply potion of blindness of tier 5 to the player for 5 seconds
+				wait 4 seconds
+				set {InTheVoidDimension::%player's uuid%} to true
+				teleport player to location(206, 54.3, -423.88, world "world_the_end", -90, -30)
+				
+				wait ("%{_time}% seconds" parsed as timespan)
+				if {InTheVoidDimension::%player's uuid%} is true:
+					play sound "block.bell.resonate" at volume 999 at pitch 0 for player
+					apply potion of blindness of tier 5 to the player for 5 seconds
+					wait 4 seconds
+					teleport player to {spawn}
+					message "&5Your time in &dThe Void &5ran out." to player
+					set {VoidDimensionCooldown::%player's uuid%::VoidDimensionCooldown} to now
+					delete {InTheVoidDimension::%player's uuid%}
+					stop
+			
+command /voidleave:
+	trigger:
+		if {InTheVoidDimension::%player's uuid%} is not set:
+			stop
+		if {PlayerMayWantToLeaveTheVoid::%player's uuid%} is not set:
+			message ""
+			message "&5Are you sure you want to leave &dThe Void&5? You cannot return in within the next &a24 hours!" to player
+			message "&5If you want to leave, please run &d/voidleave &5within the next 20 seconds."
+			message ""
+			set {PlayerMayWantToLeaveTheVoid::%player's uuid%} to true
+			wait 20 seconds
+			delete {PlayerMayWantToLeaveTheVoid::%player's uuid%}
+		if {PlayerMayWantToLeaveTheVoid::%player's uuid%} is true:
+			delete {PlayerMayWantToLeaveTheVoid::%player's uuid%}
+			play sound "block.bell.resonate" at volume 999 at pitch 0 for player
+			apply potion of blindness of tier 5 to the player for 5 seconds
+			wait 4 seconds
+			teleport player to {spawn}
+			message "&5You have left &dThe Void&5." to player
+			set {VoidDimensionCooldown::%player's uuid%::VoidDimensionCooldown} to now
+			delete {InTheVoidDimension::%player's uuid%}
+
+function VoidDailyGUI(p: player):
+	set metadata tag "VoidDailyGUI" of {_p} to chest inventory with 3 rows named "&5The Portal to The Void"
+	set slot (integers between 0 and 26) of metadata tag "VoidDailyGUI" of {_p} to purple stained glass pane named "&a"
+	set slot (all integers between 0 and 26 where [(mod(input, 2)) = 0]) of metadata tag "VoidDailyGUI" of {_p} to black stained glass pane named "&a"
+	set {_xp} to {_p}'s level
+	if {_xp} >= 300:
+		set {_xp2} to {_xp} - 300
+		set {_time} to 300
+		set {_time} to {_time} + ({_xp2} * 5)
+		set {_time} to {_time} + 900
+	if {_xp} < 300:
+		set {_time} to {_xp}
+		set {_time} to {_time} + 900
+	set {_showcasetime} to "%{_time}% seconds" parsed as timespan
+	set slot 13 of metadata tag "VoidDailyGUI" of {_p} to end portal frame with name "&dEnter The Void" with hide enchants item flag with lore "&7- 15 Minutes Daily", "&7- +1 Second Per XP LVL", "&7- +5 Seconds Per XP LVL Over 300", "&7- PVP Disabled", "&7- Double Drops", "&7- Gems", "&7- Randumium Generator", "", "&7You can spend:", "&d%{_showcasetime}%", "&7In The Void"
+	open (metadata tag "VoidDailyGUI" of {_p}) to {_p}
