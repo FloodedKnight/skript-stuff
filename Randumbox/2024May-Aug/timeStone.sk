@@ -1,0 +1,31 @@
+function timestone(TimeStoneLoopPlayer: player, seconds: integer):
+	play sound "entity.illusioner.prepare_blindness" at pitch 1 to {_TimeStoneLoopPlayer}
+	spawn armor stand at location 1 below {_TimeStoneLoopPlayer}:
+		add nbt from "{Invisible:1b}" to nbt of entity
+		make entity invulnerable
+		set {_e} to the entity
+	make {_TimeStoneLoopPlayer} ride {_e}
+	loop {_seconds} * 20 times:
+		if "%region at {_TimeStoneLoopPlayer}%" contains "spawn":
+			exit loop
+		make {_TimeStoneLoopPlayer} ride {_e}
+		wait 1 tick
+	delete entity within {_e}
+
+	
+on left click with player head:
+	if player is sneaking:
+		if name of event-item is "&4&l&kM&c&lI&6&lN&e&lF&a&lI&b&lN&9&lI&5&lT&c&lY &6&lGAUNTLET&4&l&kM":
+			if difference between now and {timestone.%player's uuid%.timestone.lastUsed} is less than 120 seconds:
+				cancel event
+				message "&8[&c✖&8] §x§2§3§f§b§0§0Time Stone &cis on cooldown! &8(%difference between {timestone.%player's uuid%.timestone.lastUsed} and (120 seconds before now)%)" to player
+			else:
+				"%region at player%" contains "main" or "arena":
+					set {timestone.%player's uuid%.timestone.lastUsed} to now
+					send action bar "&8USING &8| §x§2§3§f§b§0§0Time Stone &8|" to player
+					play sound "entity.illusioner.prepare_mirror" at pitch 1 to player
+					loop all players in radius 8 around player:
+						loop-player is not the player:
+							loop-player's gamemode is not creative
+							send "&8[§x§2§3§f§b§0§0◆&8] &c%player% is using the §x§2§3§f§b§0§0Time Stone &con you." to loop-entity
+							timestone(loop-player, 8)
