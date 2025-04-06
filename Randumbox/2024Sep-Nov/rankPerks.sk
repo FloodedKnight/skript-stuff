@@ -1,0 +1,412 @@
+options:
+	ServerName: §x§C§B§2§D§3§E§lR§x§D§0§3§0§3§E§lA§x§D§4§3§4§3§D§lN§x§D§9§3§7§3§D§lD§x§D§D§3§A§3§C§lU§x§E§2§3§D§3§C§lM§x§E§6§4§1§3§B§lB§x§E§B§4§4§3§B§lO§x§E§F§4§7§3§A§lX
+	
+	ServerAnnouncement: §x§C§B§2§D§3§E§lR§x§C§D§2§E§3§E§lA§x§C§E§2§F§3§E§lN§x§D§0§3§1§3§D§lD§x§D§2§3§2§3§D§lU§x§D§4§3§3§3§D§lM§x§D§5§3§4§3§D§lB§x§D§7§3§6§3§D§lO§x§D§9§3§7§3§C§lX §x§D§C§3§9§3§C§lA§x§D§E§3§B§3§C§lN§x§E§0§3§C§3§C§lN§x§E§1§3§D§3§C§lO§x§E§3§3§E§3§B§lU§x§E§5§4§0§3§B§lN§x§E§6§4§1§3§B§lC§x§E§8§4§2§3§B§lE§x§E§A§4§3§3§B§lM§x§E§C§4§5§3§A§lE§x§E§D§4§6§3§A§lN§x§E§F§4§7§3§A§lT
+
+
+on command:
+	player's name is "ItsRealHim":
+		if command contains "playervaults" or "pv" or "chest" or "vault":
+			cancel event
+			message "&8[&c✖&8] &7No permission. &8(Error L11 AArankPerks)"
+
+
+command /enderchest:
+	permission: ec.sk
+	aliases: /ec
+	permission message: &8[&c✖&8] &7You must be &aVIP &7or higher to do this - §x§5§F§E§2§C§5/ʀᴀɴᴋѕ
+	trigger:
+		open player's enderchest to player
+
+
+command /push [<offline player>]:
+	cooldown: 2 minutes
+	cooldown bypass: cooldownskript.bypass
+	cooldown message: &8[&c✖&8] &7You are on cooldown for &e%remaining time%
+	permission: skript.push
+	permission message: &8[&c✖&8] &7You must be &6MVP+ &7or higher to do this - §x§5§F§E§2§C§5/ʀᴀɴᴋѕ
+	trigger:
+		if arg-1 does not have permission "sk.dev":
+			push arg-1 backwards at speed 30
+			push arg-1 upwards at speed 5
+			message "&cYou were pushed by %player%! &7- &6MVP+" to arg-1
+			message "&cYou pushed %arg-1%!" to player
+		else:
+			message "&8[&c✖&8] &7You cannot push staff members." to player
+			stop
+		
+command /pushall:
+	permission: skript.pushall
+	cooldown: 15 minutes
+	cooldown bypass: cooldownskript.bypass
+	permission message: &8[&c✖&8] &7You must be &cRANDUM &7or higher to do this - §x§5§F§E§2§C§5/ʀᴀɴᴋѕ
+	cooldown message: &8[&c✖&8] &7You are on cooldown for &e%remaining time%
+	trigger:
+		loop all players:
+			loop-player does not have permission "sk.dev":
+				push loop-player backwards at speed 30
+				push loop-player upwards at speed 5
+		broadcast "&c%player% has pushed all players! &7- §x§F§6§0§0§0§0RANDUM"
+
+on damage:
+	victim is a player
+	attacker is a player
+	{pvptoggle.%victim's uuid%.pvptoggle} is the victim
+	cancel event
+	message "&8[&c✖&8] &c%victim% has &ePvP &cdisabled &7- &bMVP Rank" to attacker
+
+command /tornadoparticle:
+	permission: sk.itsrealhim
+	trigger:
+		if {Trails::%player's uuid%::Tornado} is true:
+			set {Trails::%player's uuid%::Tornado} to false
+			stop
+		while {Trails::%player's uuid%::Tornado} is true:
+			set {_r} to 0
+			set {_y} to 2
+			set {_p} to player's pitch
+			set {_x} to 0
+			loop 360 times:
+				set {_v} to spherical vector radius {_r}, yaw {_y} * loop-value-2, pitch 0
+				draw 5 of dust using dustOption(lime, 1) at location {_x} above player ~ {_v} with extra 0
+				add 0.0075 to {_x}
+				add 0.005 to {_r}
+			set {_x} to 0
+			set {_r} to 0
+			wait 10 ticks
+#				add 10 to {_y}
+
+command /togglepvp:
+	cooldown: 5 minutes
+	cooldown bypass: cooldownskript.bypass
+	permission message: &8[&c✖&8] &7You must be &bMVP &7or higher to do this - §x§5§F§E§2§C§5/ʀᴀɴᴋѕ
+	cooldown message: &8[&c✖&8] &7You are on cooldown for &e%remaining time%
+	permission: skript.pingping
+	trigger:
+		if {pvptoggle.%player's uuid%.pvptoggle} is the player:
+			message "&aToggled PVP on &7- &bMVP" to player
+			delete {pvptoggle.%player's uuid%.pvptoggle}
+		else:
+			set {pvptoggle.%player's uuid%.pvptoggle} to player
+			message "&cToggled PVP off &7- &bMVP" to player
+			
+
+on damage:
+	{pvptoggle.%attacker's uuid%.pvptoggle} is the attacker
+	cancel event
+	message "&8[&c✖&8] &cYou have PvP Disabled &7- &cUse /togglepvp to Re-Enable PvP" to attacker
+
+on mine:
+	if {pvptoggle.%player's uuid%.pvptoggle} is the player:
+		if event-block is any shulker box:
+			stop
+		if "%region at event-block%" does not contain "mine" or "gem-balls":
+			message "&8[&c✖&8] &cYou have PvP Disabled. You cannot break blocks until you enable PvP." to player
+			cancel event
+
+on left click:
+	name of player's tool is "&6Infini-Steak":
+		set {_lore::*} to lore of player's held item
+		set player's held item to golden carrot of soul speed 1 named "&6Infini-Carrot" with lore {_lore::*} with hide enchants item flag
+		stop
+	name of player's tool is "&6Infini-Carrot":
+		set {_lore::*} to lore of player's held item
+		set player's held item to steak of soul speed 1 named "&6Infini-Steak" with lore {_lore::*} with hide enchants item flag
+		stop
+#&8[&c✖&8] &7You must be &bMVP &7or higher to do this - §x§5§F§E§2§C§5/ʀᴀɴᴋѕ
+on consume:
+	name of player's tool contains "&6Infini":
+		set {_lore::*} to lore of player's held item
+		if player does not have permission "ec.sk":
+			message "&8[&c✖&8] &7You must be &aVIP &7or higher to use this - §x§5§F§E§2§C§5/ʀᴀɴᴋѕ"
+			stop
+	if player's tool is steak named "&6Infini-Steak":
+		
+		wait 2 tick
+		give player 1 steak of soul speed 1 named "&6Infini-Steak" with lore {_lore::*} with hide enchants item flag
+		stop
+	if player's offhand tool is steak named "&6Infini-Steak":
+		wait 2 tick
+		give player 1 steak of soul speed 1 named "&6Infini-Steak" with lore {_lore::*} with hide enchants item flag
+		stop
+	if player's tool is golden carrot named "&6Infini-Carrot":
+		wait 1 tick
+		give player 1 golden carrot of soul speed 1 named "&6Infini-Carrot" with lore {_lore::*} with hide enchants item flag
+		stop
+	if player's offhand tool is golden carrot named "&6Infini-Carrot":
+		wait 2 tick
+		give player 1 golden carrot of soul speed 1 named "&6Infini-Carrot" with lore {_lore::*} with hide enchants item flag
+		stop
+		
+		
+command /lightning [<offline player>]:
+	cooldown: 5 seconds
+	cooldown bypass: cooldownskript.bypass
+	cooldown message: &8[&c✖&8] &7You are on cooldown for &e%remaining time%
+	permission message: &8[&c✖&8] &7You must be &aVIP &7or higher to do this - §x§5§F§E§2§C§5/ʀᴀɴᴋѕ
+	permission: vip.lightning
+	trigger:
+		arg-1 does not have permission "op"
+		strike lightning effect at arg-1
+		message "&3You struck &b%arg-1%&3!" to player
+		message "&3You were struck by &b%player%&3! &7- &aVIP" to arg-1
+		
+on right click:
+	name of player's tool contains "&cMine-Teleporter":
+		if player does not have permission "skript.pingping":
+			message "&8[&c✖&8] &7You must be &bMVP &7or higher to use this - §x§5§F§E§2§C§5/ʀᴀɴᴋѕ" to player
+			stop
+		"%region at player%" does not contain "jail"
+		set {_time} to difference between {Randumcombat::%player's uuid%} and now
+		if {_time} < 5 seconds:
+			send action bar "&8[&c✖&8] &cYou can't use that while in combat!" to player
+			stop
+		else:
+			open chest inventory with 2 rows named smallFont("&0Teleport to a Mine!") to player
+			set slot 13, 14, 15, 16, and 17 of player's current inventory to black stained glass pane named "&a"
+			set slot 0 of player's current inventory to oak log of soul speed 1 with name "§x§7§c§5§2§0§0Wood Gen" with hide enchants item flag
+			set slot 1 of player's current inventory to cobblestone of soul speed 1 with name "&7Stone Gen" with hide enchants item flag
+			set slot 2 of player's current inventory to iron block of soul speed 1 with name "§x§f§a§f§b§c§5Iron  Gen" with hide enchants item flag
+			set slot 3 of player's current inventory to gold block of soul speed 1 with name "§x§f§b§c§c§6§fGold Gen" with hide enchants item flag
+			set slot 4 of player's current inventory to emerald block of soul speed 1 with name "§x§9§a§f§f§9§7Emerald Gen" with hide enchants item flag
+			set slot 5 of player's current inventory to redstone block of soul speed 1 with name "§x§f§f§8§b§8§bRedstone Gen" with hide enchants item flag
+			set slot 6 of player's current inventory to diamond block of soul speed 1 with name "§x§a§4§f§f§f§fDiamond Gen"  with hide enchants item flag
+			set slot 7 of player's current inventory to coal block of soul speed 1 with name "&8Coal Gen" with hide enchants item flag
+			set slot 8 of player's current inventory to crying obsidian of soul speed 1 with name "§x§a§7§6§2§f§fObsidian Gen" with hide enchants item flag
+			set slot 9 of player's current inventory to lapis block of soul speed 1 with name "§x§6§d§7§b§f§bLapis Gen 1" with hide enchants item flag  with hide enchants item flag
+			set slot 10 of player's current inventory to lapis block of soul speed 1 with name "§x§6§d§7§b§f§bLapis Gen 2" with hide enchants item flag 
+			set slot 11 of player's current inventory to lapis block of soul speed 1 with name "§x§6§d§7§b§f§bLapis Gen 3" with hide enchants item flag
+			set slot 12 of player's current inventory to netherite block of soul speed 1 with name "&8Netherite Gen" with hide enchants item flag
+
+				
+on inventory click:
+	if name of event-inventory is smallFont("&0Teleport to a Mine!"):
+		cancel event
+		if event-slot is black stained glass pane:
+			play sound "ui.button.click" at pitch 2 to player
+			stop
+		if event-slot is 0:
+			teleport player to location(218, 5, -67.5, world "world", 180, 0)
+		if event-slot is 1:
+			teleport player to location(243, 5, -67.5, world "world", 180, 0)
+		if event-slot is 2:
+			teleport player to location(287.5, 5, -68.5, world "world", 225, 0)
+		if event-slot is 3:
+			teleport player to location(286.5, 5, -49, world "world", 270, 0)
+		if event-slot is 4:
+			teleport player to location(286.5, 5, -24, world "world", 270, 0)
+		if event-slot is 5:
+			teleport player to location(287.5, 5, -4.5, world "world", 315, 0)
+		if event-slot is 6:
+			teleport player to location(268, 5, -5.5, world "world", 360, 0)
+		if event-slot is 7:
+			teleport player to location(268, 5, -68.5, world "world", 180, 0)
+		if event-slot is 8:
+			teleport player to location(243, 5, -5.5, world "world", 360, 0)
+		if event-slot is 9:
+			teleport player to location(211.5, 5, -80.5, world "world", 135, 0)
+		if event-slot is 10:
+			teleport player to location(301.5, 5, -80.5, world "world", -135, 0)
+		if event-slot is 11:
+			teleport player to location(301.5, 5, 9.5, world "world", -45, 0)
+		if event-slot is 12:
+			teleport player to location(211.5, 5, 9.5, world "world", 45, 0)
+		wait 1 tick
+		play sound "entity.enderman.teleport" at pitch 2 to player
+
+
+		
+command /hat:
+	permission: skript.hat
+	trigger:
+		if player's tool is air:
+			send "&8[&c✖&8] &7You need to hold something!" to player
+			stop
+		if player's helmet is not air:
+			send "&8[&c✖&8] &7You have something on your head!" to player
+			stop
+		else:
+			play sound "entity.item.pickup" at pitch 0 to player
+			send "&8[&a✔&8] &aHat equipped!" to player
+			set player's helmet to player's tool 
+			remove player's tool from player's inventory
+
+			
+command /craft:
+	permission: skript.craft
+	trigger:
+		open crafting table to player
+
+command /giverandumcoin [<player:offline player>] [<amount:integer>]:
+	permission: sk.dev
+	trigger:
+		give {_amount} of {RandCoin} to {_player}
+		
+command /givemineteleporter [<player:offline player>]:
+	permission: sk.dev
+	trigger:
+		give {_player} 1 of {MineTP}
+		
+command /giveinfinisteak [<player:offline player>]:
+	permission: sk.dev
+	trigger:
+		give {_player} 1 of {InfiniSteak}
+		
+command /giveexclusiveitemtoken [<player:offline player>]:
+	permission: sk.dev
+	trigger:
+		give {_player} 1 of {ExclusiveItemToken}
+
+
+command /ranks:
+    cooldown: 5 seconds
+    trigger:
+        open chest inventory with 6 rows named smallFont("&0ranks") to player
+        set slot (integers between 0 and 53) of player's current inventory to black stained glass pane
+        wait 1 tick
+        set slot 12 of player's current inventory to emerald with name "&9USD"
+        set slot 13 of player's current inventory to emerald with name "&cCAD"
+        set slot 14 of player's current inventory to emerald with name "&eEUR"
+        set slot 10 of player's current inventory to {VIP}
+        set slot 19 of player's current inventory to {MVP}
+        set slot 37 of player's current inventory to {RandumRANK}
+        set slot 28 of player's current inventory to {MVPPLUS}
+        set slot 16 and 25 and 34 and 43 of player's current inventory to barrier named "&cClose Ranks menu"
+        set slot 39 of player's current inventory to {SERVERBOOSTRANK}
+
+on inventory click:
+	if name of player's current inventory contains smallFont("&0ranks"):
+		if event-slot is a barrier:
+			cancel event
+			play sound "ui.button.click" at pitch 2 to player
+			close player's inventory
+		if event-slot is an emerald named "&eEUR":
+			cancel event
+			play sound "ui.button.click" at pitch 2 to player
+			send "<link:https://randumbox-webshop.tebex.io/category/ranks?currency=EUR>&eClick here for EUR<reset>" to player
+			close player's inventory
+		if event-slot is an emerald named "&cCAD":
+			cancel event
+			play sound "ui.button.click" at pitch 2 to player
+			send "<link:https://randumbox-webshop.tebex.io/category/ranks?currency=CAD>&eClick here for CAD<reset>" to player
+			close player's inventory
+		if event-slot is an emerald named "&9USD":
+			cancel event
+			play sound "ui.button.click" at pitch 2 to player
+			send "<link:https://randumbox-webshop.tebex.io/category/ranks?currency=USD>&eClick here for USD<reset>" to player
+			close player's inventory
+		else:
+			cancel event
+			play sound "ui.button.click" at pitch 2 to player
+
+command /compress [<text>]:
+	permission: skript.pushall
+	permission message: &8[&c✖&8] &7You must be &cRANDUM &7or higher to do this - §x§5§F§E§2§C§5/ʀᴀɴᴋѕ
+	trigger:
+		if arg-1 is "diamond":
+			set {_OREamount} to amount of plain diamond in player's inventory
+			set {_compdecimal} to {_OREamount} / 64
+			set {_compNumber} to floor({_compdecimal})
+			remove ({_compNumber} * 64) of plain diamond from player's inventory
+			give player {_compNumber} of {ZirconDiamonds}
+			stop
+		if arg-1 is "stone":
+			set {_OREamount} to amount of plain cobblestone in player's inventory
+			set {_compdecimal} to {_OREamount} / 64
+			set {_compNumber} to floor({_compdecimal})
+			remove ({_compNumber} * 64) of plain cobblestone from player's inventory
+			give player {_compNumber} of {ZirconStone}
+			stop
+		if arg-1 is "iron":
+			set {_OREamount} to amount of plain iron ingot in player's inventory
+			set {_compdecimal} to {_OREamount} / 64
+			set {_compNumber} to floor({_compdecimal})
+			remove ({_compNumber} * 64) of plain iron ingot from player's inventory
+			give player {_compNumber} of {ZirconIron}
+			stop
+		if arg-1 is "gold":
+			set {_OREamount} to amount of plain gold ingot in player's inventory
+			set {_compdecimal} to {_OREamount} / 64
+			set {_compNumber} to floor({_compdecimal})
+			remove ({_compNumber} * 64) of plain gold ingot from player's inventory
+			give player {_compNumber} of {ZirconGold}
+			stop
+		if arg-1 is "emerald":
+			set {_OREamount} to amount of plain emerald in player's inventory
+			set {_compdecimal} to {_OREamount} / 64
+			set {_compNumber} to floor({_compdecimal})
+			remove ({_compNumber} * 64) of plain emerald from player's inventory
+			give player {_compNumber} of {ZirconEmerald}
+			stop
+		if arg-1 is "redstone":
+			set {_OREamount} to amount of plain redstone in player's inventory
+			set {_compdecimal} to {_OREamount} / 64
+			set {_compNumber} to floor({_compdecimal})
+			remove ({_compNumber} * 64) of plain redstone from player's inventory
+			give player {_compNumber} of {ZirconRedstone}
+			stop
+		if arg-1 is "coal":
+			set {_OREamount} to amount of plain coal in player's inventory
+			set {_compdecimal} to {_OREamount} / 64
+			set {_compNumber} to floor({_compdecimal})
+			remove ({_compNumber} * 64) of plain coal from player's inventory
+			give player {_compNumber} of {ZirconCoal}
+			stop
+		if arg-1 is "lapis":
+			set {_OREamount} to amount of plain lapis in player's inventory
+			set {_compdecimal} to {_OREamount} / 64
+			set {_compNumber} to floor({_compdecimal})
+			remove ({_compNumber} * 64) of plain lapis from player's inventory
+			give player {_compNumber} of {ZirconLapis}
+			stop
+		if arg-1 is "obsidian":
+			set {_OREamount} to amount of plain obsidian in player's inventory
+			set {_compdecimal} to {_OREamount} / 64
+			set {_compNumber} to floor({_compdecimal})
+			remove ({_compNumber} * 64) of plain obsidian from player's inventory
+			give player {_compNumber} of {ZirconObsidian}
+			stop
+		if arg-1 is "wood":
+			set {_OREamount} to amount of plain oak log in player's inventory
+			set {_compdecimal} to {_OREamount} / 64
+			set {_compNumber} to floor({_compdecimal})
+			remove ({_compNumber} * 64) of plain oak log from player's inventory
+			give player {_compNumber} of {ZirconLogs}
+			stop
+
+on tab complete of "/compress":
+	set tab completions for position 1 to "wood", "stone", "coal", "gold", "emerald", "lapis", "redstone", "diamond" and "obsidian"
+
+command /trash:
+	cooldown: 10 seconds
+	permission message: &8[&c✖&8] &7You must be &aVIP &7or higher to do this - §x§5§F§E§2§C§5/ʀᴀɴᴋѕ
+	permission: vip.lightning
+	trigger:
+		open (chest inventory with 6 rows named "&6Trash") to player
+		
+
+command /playerboughtrank [<offline player>] [<text>]:
+	permission: majorannouncement.use
+	permission message: &cNo permission
+	trigger:
+		if arg 1 is set:
+			
+			set {_face} to ""
+			
+			set {_pixels::*} to getSkinPixels(arg-1)
+			set {_byPlayer} to smallFont("&7RANK PURCHASE")
+			loop {_pixels::*}:
+				if (loop-index parsed as a number) = 2:
+					set {_face} to "%{_face}%  %loop-value% {@ServerAnnouncement}&r%nl%"
+				else if (loop-index parsed as a number) = 3:
+					set {_face} to "%{_face}%  %loop-value% &7%{_byPlayer}%%nl%"
+				else if (loop-index parsed as a number) = 5:
+					set {_face} to "%{_face}%  %loop-value% &7» &fThank you to %arg-1% for buying %arg-2%! %nl%"
+				else if (loop-index parsed as a number) = 8:
+					set {_face} to "%{_face}%  %loop-value%"
+				else:
+					set {_face} to "%{_face}%  %loop-value%%nl%"
+			broadcast " &9&m •&9&m                                                        &r&9&m• "
+			broadcast formatted "%{_face}%"
+			broadcast " &9&m •&9&m                                                        &r&9&m• "
+
