@@ -1,0 +1,70 @@
+function endsmash(p: player):
+	set {_yheight} to {_p}'s y coordinate
+	set {_loc} to location at {_p}
+	endsmashCircle({_p})
+	loop all players in radius 10 of {_p}:
+		play sound "entity.warden.sonic_charge" at volume 999 for loop-player
+	loop all blocks in radius 10 of {_p} where [input is a grass block]:
+		"%region at loop-block%" contains "main-floor":
+			set loop-block to red wool
+			add loop-block to {_resetRedWool::*}
+	wait 1 tick
+	loop all blocks in radius 9 of {_p} where [input is a red wool]:
+		"%region at loop-block%" contains "main-floor":
+			set loop-block to a grass block
+	set {_r} to 10
+	push {_p} up at speed 10
+	wait 1 second
+	push {_p} down at speed 30
+	loop all players in radius 20 of {_p}:
+		play sound "entity.warden.sonic_boom" at volume 999 for loop-player
+	wait 0.5 seconds
+	loop 10 times:
+		loop all blocks in radius (loop-number) around {_loc}:
+			if all:
+				(distance between loop-block and {_loc}) >= ((loop-number) - 1)
+				(loop-block's y-coord = y-coord of block below {_loc})
+			then:
+				spawn ("falling %type of loop-block%" parsed as an entitytype) at loop-block with nbt from "{DropItem:0}"
+				push last spawned entity up with force 0.3
+		#loop all entities in radius loop-number around {_loc} where [input is not {_p}]:
+		#	if {_damaged::*} does not contain loop-entity:
+			#	damage loop-entity by 10
+			#	add loop-entity to {_damaged::*}
+		wait 1 ticks
+	loop {_resetRedWool::*}:
+		set block at location at loop-value to a grass block
+	loop all players in radius 9 of {_p}:
+		{pvptoggle.%loop-player's uuid%.pvptoggle} is not the loop-player
+	
+		name of {_p}'s tool contains "&dEnd Smash":
+			loop-player is not {_p}
+			make {_p} damage loop-player by 200
+		name of {_p}'s tool contains "&dEnd Smash &8[&c💎":
+			loop-player is not {_p}
+			make {_p} damage loop-player by 300
+	
+	
+	
+function endsmashCircle(p: player):
+	set {_r} to 7
+	loop 20 times:
+	
+		loop 360 times:
+			set {_v} to spherical vector radius {_r}, yaw 2 * loop-value-2, pitch 0
+			draw 5 of dust using dustOption(rgb(179, 0, 255), 1) at {_p} ~ {_v} with extra 0
+		set {_r} to {_r} - 0.35
+		wait 2 ticks
+	
+
+on right click:
+	{pvptoggle.%player's uuid%.pvptoggle} is not the player
+	name of player's tool = "&dEnd Smash":
+		if difference between now and {EndSmash::%player's uuid%} is less than 60 seconds:
+			cancel event
+			message "&8[&c✖&8] &dEnd Smash &cis on cooldown! &8(%difference between {EndSmash::%player's uuid%} and (60 seconds before now)%)" to player
+			stop
+		else:
+			endsmash(player)
+			set {EndSmash::%player's uuid%} to now
+			
