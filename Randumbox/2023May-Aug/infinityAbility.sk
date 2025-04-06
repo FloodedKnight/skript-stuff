@@ -1,16 +1,3 @@
-# ----- INFINITY ABILITY
-# ----- INFINITY ABILITY
-# ----- INFINITY ABILITY
-# ----- INFINITY ABILITY
-# ----- INFINITY ABILITY
-# ----- INFINITY ABILITY
-# ----- INFINITY ABILITY
-# ----- INFINITY ABILITY
-# ----- INFINITY ABILITY
-# ----- INFINITY ABILITY
-# ----- INFINITY ABILITY
-
-
 on right click:
 	if name of player's held item is "&4&l&kM&c&lI&6&lN&e&lF&a&lI&b&lN&9&lI&5&lT&c&lY &6&lGAUNTLET&4&l&kM":
 		if player is sneaking:
