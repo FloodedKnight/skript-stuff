@@ -1,0 +1,48 @@
+on right click:
+	{pvptoggle.%player's uuid%.pvptoggle} is not the player
+	name of player's tool = "&8Black Hole Wand":
+		if difference between now and {BlackHoleWand::%player's uuid%::BlackHoleWand} is less than 75 seconds:
+			cancel event
+			message "&8[&c✖&8] &8Black Hole Wand &cis on cooldown! &8(%difference between {BlackHoleWand::%player's uuid%::BlackHoleWand} and (75 seconds before now)%)" to player
+			stop
+		else:
+			blackholewand(player)
+			set {BlackHoleWand::%player's uuid%::BlackHoleWand} to now
+	
+	
+	
+function blackholewand(p: player):
+	set {_pitch} to 30
+	set {_yaw} to 180
+	loop 140 times:
+		set {_loc} to location 7 meters in front of {_p}'s eyes
+		bSphere({_loc}, 2, 25)
+			#draw 1 dust using dustOption(rgb(255, 139, 38), 1) at circle({_loc}, 2.25, 4, {_yaw}, {_pitch})
+		#	draw 1 dust using dustOption(rgb(255, 139, 38), 1) at circle({_loc}, 2.5, 4, {_yaw}, {_pitch})
+		#	draw 1 dust using dustOption(rgb(255, 139, 38), 1) at circle({_loc}, 2.75, 4, {_yaw}, {_pitch})
+		#	draw 1 dust using dustOption(rgb(255, 139, 38), 1) at circle({_loc}, 3.0, 4, {_yaw}, {_pitch})
+		draw 1 dust using dustOption(rgb(255, 139, 38), 1) at circle({_loc}, 3.25, 4, {_yaw}, {_pitch})
+		draw 1 dust using dustOption(rgb(255, 139, 38), 1) at circle({_loc}, 3.5, 4, {_yaw}, {_pitch})
+		wait 1 tick
+		loop all players in radius 10 of {_loc}:
+			loop-player is not {_p}
+			loop-player does not have permission "op"
+			loop-player does not have scoreboard tag "NPC"
+			{pvptoggle.%loop-player's uuid%.pvptoggle} is not the loop-player
+			"%region at loop-player%" does not contain "spawn"
+			set {_v} to vector from loop-player to {_loc}
+			push loop-player {_v} at speed 0.3
+			show light blue dust with speed 0 at line(location at and 1.3 meters above loop-player, {_loc}, 0.25)
+			loop all players in radius 10 of loop-entity-1:
+				damage loop-player-1 by 10
+		wait 1 tick
+					
+function bSphere(l: location, t3: num, t4: num):
+	loop {_t4} times:
+		loop {_t4} times:
+			set {_v} to spherical vector radius {_t3}, yaw loop-value-1*360/{_t4}, pitch loop-value-2*360/{_t4}
+			draw 1 dust using dustOption(rgb(10, 10, 10), 1) at {_l} ~ {_v}
+			
+# draw 1 dust using dustOption(rgb(10, 10, 10), 1) 
+
+# function circle(center: location, radius: number, step-size: number = 10, yaw: number = 0, pitch: number = 0) :: locations:
