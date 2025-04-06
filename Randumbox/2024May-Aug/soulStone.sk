@@ -1,0 +1,40 @@
+on damage:
+	victim is a player:
+		attacker is a player:
+			if (victim's health - damage) is less than or equal to 3:
+				if victim has {InfinityGauntlet}:
+					if difference between now and {soulstonePLAYER.%victim's uuid%.soulstonePLAYER.lastUsed} is less than 600 seconds:
+						stop
+					else:
+						set {_damage} to damage
+						cancel event
+						heal victim
+						loop all players in radius 5 around victim:
+							play sound "item.totem.use" at pitch 2 to loop-player
+						set {soulstonePLAYER.%victim's uuid%.soulstonePLAYER.lastUsed} to now
+						show 200 totem with speed 1 at victim in radius of 1.5
+						wait 1 tick
+						send action bar "&8USING &8| §x§f§b§4§a§0§0Soul Stone &8|" to victim
+						wait 1 second
+						send action bar "&8USING &8| §x§f§b§4§a§0§0Soul Stone &8|" to victim
+					
+
+on damage:
+	victim is a player:
+		attacker is a mob:
+			if (victim's health - damage) is less than or equal to 3:
+				if victim has {InfinityGauntlet}:
+					if difference between now and {soulstoneENTITY.%victim's uuid%.soulstoneENTITY.lastUsed} is less than 50 seconds:
+						stop
+					else:
+						set {_damage} to damage
+						cancel event
+						heal victim
+						loop all players in radius 5 around victim:
+							play sound "item.totem.use" at pitch 2 to loop-player
+						set {soulstoneENTITY.%victim's uuid%.soulstoneENTITY.lastUsed} to now
+						show 200 totem with speed 1 at victim in radius of 1.5
+						wait 1 tick
+						send action bar "&8USING &8| §x§f§b§4§a§0§0Soul Stone &8|" to victim
+						wait 1 second
+						send action bar "&8USING &8| §x§f§b§4§a§0§0Soul Stone &8|" to victim
