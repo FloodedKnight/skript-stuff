@@ -1,0 +1,217 @@
+on damage:
+	victim's name is "&dVoidling":
+		damage cause is soul fire
+		cancel event
+		
+on healing of an enderman:
+	cancel event
+
+on death:
+	victim is enderman:
+		clear drops
+
+on projectile hit:
+	name of victim is "&dVoidling":
+		if "%region at shooter%" contains "disabledamagevoidlings":
+			cancel event
+			message "&8[&c✖&8] &7You cannot attack Voidlings here." to shooter
+			stop
+		name of shooter's tool is "&5End Bow &8[&b💎&7💎💎💎💎&8]":
+			damage victim by 30
+			delete event-projectile
+			play sound "entity.experience_orb.pickup" at pitch 0.8 to shooter
+			wait 3 ticks
+			if name of shooter's offhand item contains "&x&7&F&1&4&C&End Talisman &8[&b💎💎💎":
+				damage victim by 30
+			if any:
+				victim is dead
+				victim's health < 10
+			then:
+				kill victim
+				give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 50%:
+					give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 20%:
+					give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 10%:
+					give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 0.05%:
+					raredropSFX(shooter)
+					message "&6&lRARE DROP! %name of {VoidKey}% &d(0.05%%)" to shooter
+					give shooter 1 of {VoidKey}
+					
+				if name of shooter's offhand item contains "&x&7&F&1&4&C&End Talisman &8[&b💎💎💎💎💎":
+					chance of 0.2%:
+						raredropSFX(shooter)
+						message "&6&lRARE DROP! &5Summoning Eye &d(0.2%%)" to shooter
+						give shooter 1 of ender eye of soul speed 1 with name "&5Summoning Eye" with hide enchants item flag
+				else:
+					chance of 0.1%:
+						raredropSFX(shooter)
+						message "&6&lRARE DROP! &5Summoning Eye &d(0.1%%)" to shooter
+						give shooter 1 of ender eye of soul speed 1 with name "&5Summoning Eye" with hide enchants item flag
+				
+			stop
+			
+on projectile hit:
+	name of victim is "&dVoidling":
+		if "%region at shooter%" contains "disabledamagevoidlings":
+			cancel event
+			message "&8[&c✖&8] &7You cannot attack Voidlings here." to shooter
+			stop
+		name of shooter's tool is "&5End Bow &8[&b💎&7💎💎💎💎&8]":
+			damage victim by 50
+			delete event-projectile
+			play sound "entity.experience_orb.pickup" at pitch 0.8 to shooter
+			wait 3 ticks
+			if name of shooter's offhand item contains "&x&7&F&1&4&C&CEnd Talisman &8[&b💎💎💎":
+				damage victim by 65
+			if any:
+				victim is dead
+				victim's health < 10
+			then:
+				kill victim
+				give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 50%:
+					give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 20%:
+					give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 10%:
+					give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 0.05%:
+					raredropSFX(shooter)
+					message "&6&lRARE DROP! %name of {VoidKey}% &d(0.05%%)" to shooter
+					give shooter 1 of {VoidKey}
+				if name of shooter's offhand item contains "&x&7&F&1&4&C&CEnd Talisman":
+					if shooter's offhand item is netherite armor smithing template:
+						chance of 0.2%:
+							raredropSFX(shooter)
+							message "&6&lRARE DROP! &5Summoning Eye &d(0.2%%)" to shooter
+							give shooter 1 of ender eye of soul speed 1 with name "&5Summoning Eye" with hide enchants item flag
+				else if name of shooter's offhand item contains "End Talisman &8[&b💎💎💎💎💎":
+					chance of 0.2%:
+						raredropSFX(shooter)
+						message "&6&lRARE DROP! &5Summoning Eye &d(0.2%%)" to shooter
+						give shooter 1 of ender eye of soul speed 1 with name "&5Summoning Eye" with hide enchants item flag
+				else:
+					chance of 0.1%:
+						raredropSFX(shooter)
+						message "&6&lRARE DROP! &5Summoning Eye &d(0.1%%)" to shooter
+						give shooter 1 of ender eye of soul speed 1 with name "&5Summoning Eye" with hide enchants item flag
+			stop
+			
+on projectile hit:
+	name of victim is "&dVoidling":
+		if "%region at shooter%" contains "disabledamagevoidlings":
+			cancel event
+			message "&8[&c✖&8] &7You cannot attack Voidlings here." to shooter
+			stop
+		name of shooter's tool contains "&5End Bow &8[&b💎💎":
+			damage victim by 85
+			delete event-projectile
+			play sound "entity.experience_orb.pickup" at pitch 0.8 to shooter
+			if name of shooter's offhand item contains "&x&7&F&1&4&C&End Talisman &8[&b💎💎💎":
+				damage victim by 85
+			wait 3 ticks
+			
+			if any:
+				victim is dead
+				victim's health < 10
+			then:
+				kill victim
+				give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 50%:
+					give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 20%:
+					give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 10%:
+					give shooter 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+				chance of 0.05%:
+					raredropSFX(shooter)
+					message "&6&lRARE DROP! %name of {VoidKey}% &d(0.05%%)" to shooter
+					give shooter 1 of {VoidKey}
+				if name of shooter's offhand item contains "&x&7&F&1&4&C&CEnd Talisman &8[&b💎💎💎💎💎":
+					chance of 0.2%:
+						raredropSFX(shooter)
+						message "&6&lRARE DROP! &5Summoning Eye &d(0.2%%)" to shooter
+						give shooter 1 of ender eye of soul speed 1 with name "&5Summoning Eye" with hide enchants item flag
+				else:
+					chance of 0.1%:
+						raredropSFX(shooter)
+						message "&6&lRARE DROP! &5Summoning Eye &d(0.1%%)" to shooter
+						give shooter 1 of ender eye of soul speed 1 with name "&5Summoning Eye" with hide enchants item flag
+				
+			stop
+			
+on damage:
+	name of victim is "&dVoidling":
+		attacker is a player:
+			if "%region at attacker%" contains "disabledamagevoidlings":
+				cancel event
+				message "&8[&c✖&8] &7You cannot attack Voidlings here." to attacker
+				stop
+			unformatted name of attacker's tool is "Impostor's Sword" or "M Dragon's Blade M" or "Tech Blade":
+				damage victim by 50
+				wait 5 ticks
+				if any:
+					victim is dead
+					victim's health < 10
+				then:
+					kill victim
+					give attacker 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+					chance of 50%:
+						give attacker 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+					chance of 20%:
+						give attacker 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+					chance of 10%:
+						give attacker 1 of ender pearl of soul speed 1 named "&dVoidling Soul" with hide enchants item flag
+					chance of 0.05%:
+						raredropSFX(attacker)
+						message "&6&lRARE DROP! %name of {VoidKey}% &d(0.05%%)" to attacker
+						give attacker 1 of {VoidKey}
+			
+					if name of attacker's offhand item contains "End Talisman &8[&b💎💎💎💎💎":
+						chance of 0.2%:
+							raredropSFX(attacker)
+							message "&6&lRARE DROP! &5Summoning Eye &d(0.2%%)" to attacker
+							give attacker 1 of ender eye of soul speed 1 with name "&5Summoning Eye" with hide enchants item flag
+					else:
+						chance of 0.1%:
+							raredropSFX(attacker)
+							message "&6&lRARE DROP! &5Summoning Eye &d(0.1%%)" to attacker
+							give attacker 1 of ender eye of soul speed 1 with name "&5Summoning Eye" with hide enchants item flag
+				
+				stop
+		
+
+every 3 minutes:
+	loop 50 times:
+		set {_randomEnderman} to random element out of {EndermanSpawningRandom::*}
+		"%region at {_randomEnderman}%" does not contain "dragonspawnanimation"
+		spawn enderman at {_randomEnderman} with nbt from "{CustomName:'[{""text"":""Voidling"",""color"":""light_purple""}]',Health:400,PersistenceRequired:1b,attributes:[{id:""generic.max_health"",base:400f},{id:""generic.movement_speed"",base:0.4f},{id:""generic.attack_damage"",base:272f}]}"
+		wait 1 tick
+	chance of 10%:
+		broadcast "&5🐉 &dBonus Voidlings are spawning!"
+		loop 50 times:
+			set {_randomEnderman} to random element out of {EndermanSpawningRandom::*}
+			"%region at {_randomEnderman}%" does not contain "dragonspawnanimation"
+			spawn enderman at {_randomEnderman} with nbt from "{CustomName:'[{""text"":""Voidling"",""color"":""light_purple""}]',Health:400,PersistenceRequired:1b,attributes:[{id:""generic.max_health"",base:400f},{id:""generic.movement_speed"",base:0.4f},{id:""generic.attack_damage"",base:272f}]}"
+		wait 1 tick
+		
+every 11 minutes:
+	loop all monsters:
+		name of loop-monster is "&dVoidling":
+			kill loop-monster
+		name of loop-monster is "&5Dragon Minions":
+			kill loop-monster
+		name of loop-monster contains "&d&lENDER MAGE":
+			kill loop-monster
+			
+#command setEndermanSpawningblocks:
+#	permission: sk.dev
+#	trigger:
+#		loop all blocks in radius 80 of player where ["%region at input%" contains "endermanspawningskript"]:
+#			add location at loop-value to {EndermanSpawningRandom::*}
+#		broadcast "&6Done"
+				
+			
