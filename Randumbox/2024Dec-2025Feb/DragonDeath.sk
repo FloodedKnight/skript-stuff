@@ -1,0 +1,46 @@
+on death of ender dragon:
+	delete boss bar with id "RagingDragonBossBar"
+	delete boss bar with id "HyperDragonBossBar"
+	delete boss bar with id "LifeDragonBossBar"
+	delete boss bar with id "FinalDragonBossBar"
+	execute console command "/deactivatehexagon"
+	
+	loop all monsters:
+		name of loop-monster is "&5Dragon Minions"
+		kill loop-monster
+		
+	unformatted name of victim contains "Ultimate":
+		set {_u} to uuid int array as string from victim
+		give {mob::%{_u}%} 1 of dragon egg of soul speed 1 named "&dThe Dragon Egg" with lore "&d&l&kM &d&lMYTHIC &d&l&kM" with hide enchants item flag
+		delete {mob::%{_u}%}
+	set {_index::*} to sorted indexes of {DragonDamageTop::*} in descending order
+	
+	
+# &#7F14CCEnd Talisman   §x§7§F§1§4§C§CE
+	
+	
+	loop all players:
+		message "&a&m                                                                                " to loop-player
+		send "" to loop-player
+		name of victim is "&c&lRaging Dragon":
+			message "                        &r&6&lRAGING DRAGON DOWN!" to loop-player
+		name of victim is "&b&lHyper Dragon":
+			message "                        &r&6&lHYPER DRAGON DOWN!" to loop-player
+		name of victim is "&a&lLife Dragon":
+			message "                        &r&6&lLIFE DRAGON DOWN!" to loop-player
+		unformatted name of victim is "M Ultimate Dragon M":
+			message "                 &r&4&l&kM &r&6&lULTIMATE &c&lDRAGON &r&4&l&kM &r&6&lDOWN!" to loop-player
+		send "" to loop-player
+		loop 3 times:
+			set {_index} to {_index::%loop-value-2%}
+			set {_player} to {_index} parsed as offline player	
+			if loop-value-2 is 1:
+				send "          &e&l%loop-value-2%st Damager &r&7- %hexfix({_player}'s prefix)%%{_player}% &r&7» &c%{DragonDamageTop::%{_player}'s uuid%}%" to loop-player
+			if loop-value-2 is 2:
+				send "          &6&l%loop-value-2%nd Damager &r&7- %hexfix({_player}'s prefix)%%{_player}% &r&7» &c%{DragonDamageTop::%{_player}'s uuid%}%" to loop-player
+			if loop-value-2 is 3:
+				send "          &c&l%loop-value-2%rd Damager &r&7- %hexfix({_player}'s prefix)%%{_player}% &r&7» &c%{DragonDamageTop::%{_player}'s uuid%}%" to loop-player
+		message "" to loop-player
+		message "                        &7Your Damage: &c%{DragonDamageTop::%loop-player's uuid%} ? 0% " to loop-player
+		message "" to loop-player
+		message "&a&m                                                                                " to loop-player
