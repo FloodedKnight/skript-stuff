@@ -1,0 +1,65 @@
+options:
+	# Name of the gun
+	lasergunname: &4&l&kM&c&lI&6&lN&e&lF&a&lI&b&lN&9&lI&5&lT&c&lY &6&lGAUNTLET&4&l&kM
+	# Permission to give yourself a gun
+	permission: lasergun
+	# Permission to give someone else a gun
+	givepermission: lasergun.give
+	# Wether the laser should break blocks
+	breakblocks: false
+	# Wether the laser should kill entities
+	killentities: true
+	# Wether the laser should keep going and break all blocks on it's path, or stop on the first hit
+	piercing: false
+	# Strength (the radius around the laser that should be destroyed)
+	strength: 1.3
+	# Laser particle (recommended: happy villager, firework spark)
+	particle: purple dust
+	# Play sound when shooting?
+	shootsoundon: true
+	# Shoot sound (played at player when shooting)
+	shootsound: block.beacon.deactivate 
+	# Play sound when breaking a block?
+	hitsoundon: true
+	# Hit sound (played when breaking a block)
+	hitsound: entity.generic.explode
+	# Should the script show a particle at the player when shooting
+	shootparticleon: false
+	# Shoot particle (played at player when shooting)
+	shootparticle: flash
+	# Should the script show a particle when breaking a block
+	hitparticleon: true
+	# Hit particle (spawned 5x at a block when broken)
+	hitparticle: lava
+	#SOULSTONE ABILITY
+	soulstoneparticle: totem
+
+on left click with player head:
+	if player is not sneaking:
+		if name of event-item is "{@lasergunname}":
+			if {@shootsoundon} = true:
+				play sound "{@shootsound}" to player
+			if {@shootparticleon} = true:
+				show {@shootparticle} with speed 0 at player
+			send action bar "&8USING &8| §x§b§a§0§0§f§dPower Stone &8|" to player
+			loop 125 times:
+				set {_loc} to location (loop-value / 7) meters in front of and 1.3 meters above the player
+				show {@particle} with speed 0 at {_loc}
+				if {@killentities} is true:
+					loop all players in radius {@strength} around {_loc}:
+						loop-player is not the player
+						loop-player's gamemode is not creative
+						make player damage loop-player by 25
+						play sound "{@shootsound}" at pitch 1 to loop-player
+				if block at {_loc} is not air:
+					if {@breakblocks} is true:
+						if {@hitsoundon} = true:
+							play sound "{@hitsound}" at {_loc}
+						loop blocks in radius {@strength} around the block at {_loc}:
+							loop-block is not air
+							loop-block is not bedrock or water or lava
+							set loop-block to air
+#							if {@hitparticleon} = true:
+#								show 5 {@hitparticle} at loop-block
+						stop if {@piercing} = false
+			wait 2 ticks
