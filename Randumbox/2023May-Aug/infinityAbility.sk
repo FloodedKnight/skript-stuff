@@ -1,0 +1,46 @@
+# ----- INFINITY ABILITY
+# ----- INFINITY ABILITY
+# ----- INFINITY ABILITY
+# ----- INFINITY ABILITY
+# ----- INFINITY ABILITY
+# ----- INFINITY ABILITY
+# ----- INFINITY ABILITY
+# ----- INFINITY ABILITY
+# ----- INFINITY ABILITY
+# ----- INFINITY ABILITY
+# ----- INFINITY ABILITY
+
+
+on right click:
+	if name of player's held item is "&4&l&kM&c&lI&6&lN&e&lF&a&lI&b&lN&9&lI&5&lT&c&lY &6&lGAUNTLET&4&l&kM":
+		if player is sneaking:
+			if difference between now and {INFINITY.%player's uuid%.INFINITY.lastUsed} is less than 7 minutes:
+				cancel event
+				message "&8[&c✖&8] &4&l&kM&r&c&lI&6&lN&e&lF&a&lI&b&lN&9&lI&5&lT&c&lY&r&4&l&kM &r&cis on cooldown! &8(%difference between {INFINITY.%player's uuid%.INFINITY.lastUsed} and (7 minutes before now)%)" to player
+			else:
+
+				set {INFINITY.%player's uuid%.INFINITY.lastUsed} to now
+				send action bar "&8USING &8| &4&l&kM&r&c&lI&6&lN&e&lF&a&lI&b&lN&9&lI&5&lT&c&lY&r&4&l&kM &r&8|" to player
+				apply levitation to player for 4 seconds
+				wait 4.6 seconds
+				create fake explosion in front of the player
+				create fake explosion behind the player
+				create fake explosion to the left of the player
+				create fake explosion to the right of the player
+				loop all players in radius 10 of player:
+					loop-player is not the player:
+						wait 1 tick
+						if name of player's tool is "&4&l&kM&c&lI&6&lN&e&lF&a&lI&b&lN&9&lI&5&lT&c&lY &6&lGAUNTLET&4&l&kM":
+							make player damage loop-player by 10000
+				set {_y} to 0
+				loop all blocks in radius 5 around player where [input is not air]:
+					set {_speed} to random number between 0 and 1
+					spawn ("falling %type of loop-block%" parsed as an entitytype) at player with nbt from "{DropItem:0}"
+					push last spawned entity up with force {_speed}
+					set {_v} to spherical vector radius 5, yaw {_y}, pitch 0
+					push last spawned entity {_v} at speed {_speed}
+					add 5 to {_y}
+
+on falling block land:
+	kill event-entity
+	cancel event
