@@ -1,0 +1,43 @@
+# Originally not made by me
+
+on swap hand items:
+	if name of player's held item is "&4&l&kM&c&lI&6&lN&e&lF&a&lI&b&lN&9&lI&5&lT&c&lY &6&lGAUNTLET&4&l&kM":
+		if difference between now and {RealityStone.%player's uuid%.RealityStone.lastUsed} is less than 60 seconds:
+			cancel event
+			message "&8[&c✖&8] §x§f§6§0§0§0§0Reality Stone &cis on cooldown! &8(%difference between {RealityStone.%player's uuid%.RealityStone.lastUsed} and (60 seconds before now)%)" to player
+		else:
+			if "%region at player%" contains "main":
+				set {RealityStone.%player's uuid%.RealityStone.lastUsed} to now
+				send action bar "&8USING &8| §x§f§6§0§0§0§0Reality Stone &8|" to player
+				cancel event
+				set {_yaw} to player's yaw
+				set {_pitch} to player's pitch
+				draw 200 of dust using dustOption(rgb(247, 57, 57), 1) at player ~ vector(0, 0, 0) with offset vector(0.5, 1, 0.5)
+				wait 1 tick
+				loop all players in radius 5 around player:
+					loop-player is not the player:
+						play sound "entity.fox.teleport" at pitch 1 to loop-player
+				wait 1 tick
+				if "%region at location(player's x coordinate, player's y coordinate, player's z coordinate + 188, world "world", {_yaw}, {_pitch})%" does not contain "_reality-box":
+					message "&8[&c✖&8] §x§f§6§0§0§0§0Reality Stone &7error occured. - Line 37 irealitystone.sk" to player
+					stop
+				teleport player to location(player's x coordinate, player's y coordinate, player's z coordinate + 188, world "world", {_yaw}, {_pitch})
+				play sound "entity.fox.teleport" at pitch 1 to player
+				loop 160 times:
+					draw 1 of dust using dustOption(rgb(247, 57, 57), 2) at location(player's x coordinate, player's y coordinate, player's z coordinate - 188, world "world", {_yaw}, {_pitch})
+					wait 1 tick
+				set {_yaw} to player's yaw
+				set {_pitch} to player's pitch
+				if "%region at location(player's x coordinate, player's y coordinate, player's z coordinate - 188, world "world")%" does not contain "main" or "spawn":
+					message "&8[&c✖&8] §x§f§6§0§0§0§0Reality Stone &7error occured. - Line 47 irealitystone.sk" to player
+					stop
+				teleport player to location(player's x coordinate, player's y coordinate, player's z coordinate - 188, world "world", {_yaw}, {_pitch})
+				wait 1 tick
+				loop all players in radius 5 around player:
+					loop-player is not the player:
+						play sound "entity.fox.teleport" at pitch 1 to loop-player
+				draw 200 of dust using dustOption(rgb(247, 57, 57), 1) at player ~ vector(0, 0, 0) with offset vector(0.5, 1, 0.5)
+				wait 1 tick
+				play sound "entity.fox.teleport" at pitch 1 to player
+			else:
+				send "&8[&c✖&8] &cYou may only use the §x§f§6§0§0§0§0Reality Stone &cin the box!" to player
