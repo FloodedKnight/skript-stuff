@@ -1,0 +1,23 @@
+function raredropSFX(p: player):
+	loop 2 times:
+		play sound "block.note_block.pling" at pitch 0.8 to {_p}
+		play sound "block.note_block.pling" at pitch 0.6 to {_p}
+		wait 2 tick
+	loop 3 times:
+		play sound "block.note_block.pling" at pitch 1.0 to {_p}
+		play sound "block.note_block.pling" at pitch 0.8 to {_p}
+		wait 2 tick
+	loop 4 times:
+		play sound "block.note_block.pling" at pitch 1.2 to {_p}
+		play sound "block.note_block.pling" at pitch 1.0 to {_p}
+		wait 2 tick
+		
+command raredropSFX [<offline player>]:
+	permission: sk.dev
+	trigger:
+		if arg-1 is not set:
+			raredropSFX(player)
+		if arg-1 is set:
+			raredropSFX(arg-1)
+
+  
