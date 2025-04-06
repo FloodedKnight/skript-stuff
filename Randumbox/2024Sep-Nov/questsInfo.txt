@@ -1,0 +1,1 @@
+# Quests are just a bunch of checking for items and taking items from the player, then tracking their quest progress with a variable. There is a lot of them so I won't post them.
